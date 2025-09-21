@@ -1,24 +1,23 @@
-# Nestjs specific
-/dist
-/node_modules
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
 /build
-/tmp
 
-# Logs
-logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+# OS
+.DS_Store
+Thumbs.db
 
-# dotenv environment variable files
+# Env
 .env
-.env.development
-.env.test
-.env.production
+.env.*
+!.env.example
+!.env.test
 
-# temp directory
-.temp
-.tmp
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
