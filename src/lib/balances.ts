@@ -1,0 +1,1 @@
+export const balances = new Map<string, number>();
