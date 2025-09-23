@@ -18,6 +18,12 @@
       coins = data.balance;
     }
 
+    async function fetchPixels() {
+      const response = await fetch('/api/pixels');
+      const data = await response.json();
+      pixels.set(new Map(data.pixels));
+    }
+
     onMount(async () => {
       ctx = canvas.getContext('2d')!;
       const savedUsername = localStorage.getItem('username');
@@ -27,10 +33,7 @@
         username = prompt('Enter your username:') || 'Anonymous';
         localStorage.setItem('username', username);
       }
-      const savedPixels = localStorage.getItem('pixels');
-      if (savedPixels) {
-        pixels.set(new Map(JSON.parse(savedPixels)));
-      }
+      await fetchPixels();
       await fetchBalance();
     });
 
@@ -76,43 +79,43 @@
       }
     }
 
-    async function handleClick(event: MouseEvent) {
-      const rect = canvas.getBoundingClientRect();
-      const x = Math.floor((event.clientX - rect.left) / unitSize);
-      const y = Math.floor((event.clientY - rect.top) / unitSize);
-      const key = `${x},${y}`;
-      if ($pixels.has(key)) {
-        const link = $pixels.get(key)!.link;
-        if (link) {
-          window.open(link, '_blank');
-        }
-      } else {
-        if (coins >= pixelCost) {
-          const color = prompt('Enter color (hex or name):');
-           if (color) {
-             const link = prompt('Enter link (optional):');
-              const response = await fetch('/api/balance/decrease', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: username, amount: pixelCost })
-              });
-             const data = await response.json();
-             if (data.success) {
-               pixels.update(p => {
-                 p.set(key, { color, link: link || undefined, user: username });
-                 return p;
+     async function handleClick(event: MouseEvent) {
+       const rect = canvas.getBoundingClientRect();
+       const x = Math.floor((event.clientX - rect.left) / unitSize);
+       const y = Math.floor((event.clientY - rect.top) / unitSize);
+       const key = `${x},${y}`;
+       if ($pixels.has(key)) {
+         const link = $pixels.get(key)!.link;
+         if (link) {
+           window.open(link, '_blank');
+         }
+       } else {
+         if (coins >= pixelCost) {
+           const color = prompt('Enter color (hex or name):');
+            if (color) {
+              const link = prompt('Enter link (optional):');
+               const response = await fetch('/api/pixels', {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ x, y, color, link, username })
                });
-               localStorage.setItem('pixels', JSON.stringify(Array.from($pixels)));
-               coins -= pixelCost;
-             } else {
-               alert('Failed to decrease balance');
-             }
-           }
-        } else {
-          alert(`Not enough coins! You need ${pixelCost} coin(s) to place a pixel.`);
-        }
-      }
-    }
+              const data = await response.json();
+              if (data.success) {
+                pixels.update(p => {
+                  p.set(key, { color, link: link || undefined, user: username });
+                  return p;
+                });
+                coins -= pixelCost;
+                await fetchBalance(); // refresh balance
+              } else {
+                alert(data.error || 'Failed to place pixel');
+              }
+            }
+         } else {
+           alert(`Not enough coins! You need ${pixelCost} coin(s) to place a pixel.`);
+         }
+       }
+     }
 </script>
 
  <div>
