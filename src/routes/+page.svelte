@@ -1,6 +1,12 @@
-  <script lang="ts">
+<head>
+  <title>Pxl</title>
+</head>
+
+
+ <script lang="ts">
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
+
 
     let canvas: HTMLCanvasElement;
     let ctx: CanvasRenderingContext2D;
@@ -11,6 +17,18 @@
     let testAmount: number = 0;
     const unitSize = 10;
     const pixelCost = 1;
+
+    // Inline color picker state
+    let selectedColor = '#ff0000';
+    let pendingLink = '';
+    let showPicker = false;
+    let pickerStyle = { left: '0px', top: '0px' };
+    let pendingX: number | null = null;
+    let pendingY: number | null = null;
+  // Hover state for cursor highlight
+  let hoverX: number | null = null;
+  let hoverY: number | null = null;
+  let allowOverride = false;
 
     async function fetchBalance() {
       const response = await fetch(`/api/balance/${username}`);
@@ -37,18 +55,41 @@
       await fetchBalance();
     });
 
-   function render(pixelsMap: Map<string, {color: string, link?: string, user: string}>) {
+   function render(pixelsMap: Map<string, {color: string, link?: string, user: string}>, hx: number | null, hy: number | null) {
      ctx.clearRect(0, 0, 1000, 1000);
      for (let [key, data] of pixelsMap) {
        const [x, y] = key.split(',').map(Number);
        ctx.fillStyle = data.color;
        ctx.fillRect(x * unitSize, y * unitSize, unitSize, unitSize);
      }
+
+     // draw hover highlight on top
+     if (hx !== null && hy !== null) {
+       const key = `${hx},${hy}`;
+       const occupied = pixelsMap.has(key);
+       // choose overlay color depending on occupied and override
+       let fillColor = 'rgba(0,0,255,0.18)';
+       let strokeColor = 'rgba(0,0,200,0.9)';
+       if (occupied) {
+         if (allowOverride) {
+           fillColor = 'rgba(255,165,0,0.22)'; // orange for replace
+           strokeColor = 'rgba(255,140,0,0.95)';
+         } else {
+           fillColor = 'rgba(255,0,0,0.22)'; // red for blocked
+           strokeColor = 'rgba(200,0,0,0.95)';
+         }
+       }
+       ctx.save();
+       ctx.fillStyle = fillColor;
+       ctx.fillRect(hx * unitSize, hy * unitSize, unitSize, unitSize);
+       ctx.lineWidth = 2;
+       ctx.strokeStyle = strokeColor;
+       ctx.strokeRect(hx * unitSize + 1, hy * unitSize + 1, unitSize - 2, unitSize - 2);
+       ctx.restore();
+     }
    }
 
-   $: if (ctx) render($pixels);
-
-
+   $: if (ctx) render($pixels, hoverX, hoverY);
 
    function getLeaderboard(pixelsMap: Map<string, {color: string, link?: string, user: string}>) {
      const userCounts: { [user: string]: number } = {};
@@ -84,44 +125,101 @@
        const x = Math.floor((event.clientX - rect.left) / unitSize);
        const y = Math.floor((event.clientY - rect.top) / unitSize);
        const key = `${x},${y}`;
-       if ($pixels.has(key)) {
-         const link = $pixels.get(key)!.link;
-         if (link) {
-           window.open(link, '_blank');
+       const occupied = $pixels.has(key);
+       if (occupied) {
+         if (!allowOverride) {
+           const link = $pixels.get(key)!.link;
+           if (link) {
+             window.open(link, '_blank');
+           }
+           // hide picker if open
+           showPicker = false;
+           return;
          }
+         // if override allowed, fallthrough to placing (show picker)
+       }
+
+       // placing or overriding
+       if (coins >= pixelCost) {
+         pendingX = x;
+         pendingY = y;
+         const left = Math.min(window.innerWidth - 220, Math.max(0, event.clientX));
+         const top = Math.min(window.innerHeight - 140, Math.max(0, event.clientY));
+         pickerStyle = { left: `${left}px`, top: `${top}px` };
+         pendingLink = '';
+         showPicker = true;
        } else {
-         if (coins >= pixelCost) {
-           const color = prompt('Enter color (hex or name):');
-            if (color) {
-              const link = prompt('Enter link (optional):');
-               const response = await fetch('/api/pixels', {
-                 method: 'POST',
-                 headers: { 'Content-Type': 'application/json' },
-                 body: JSON.stringify({ x, y, color, link, username })
-               });
-              const data = await response.json();
-              if (data.success) {
-                pixels.update(p => {
-                  p.set(key, { color, link: link || undefined, user: username });
-                  return p;
-                });
-                coins -= pixelCost;
-                await fetchBalance(); // refresh balance
-              } else {
-                alert(data.error || 'Failed to place pixel');
-              }
-            }
-         } else {
-           alert(`Not enough coins! You need ${pixelCost} coin(s) to place a pixel.`);
-         }
+         alert(`Not enough coins! You need ${pixelCost} coin(s) to place a pixel.`);
        }
      }
+
+    function handleMouseMove(event: MouseEvent) {
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((event.clientX - rect.left) / unitSize);
+      const y = Math.floor((event.clientY - rect.top) / unitSize);
+      if (x !== hoverX || y !== hoverY) {
+        hoverX = x;
+        hoverY = y;
+      }
+    }
+
+    function handleMouseLeave() {
+      hoverX = null;
+      hoverY = null;
+    }
+
+    async function confirmPlace() {
+      if (pendingX === null || pendingY === null) return;
+      const x = pendingX;
+      const y = pendingY;
+      const color = selectedColor;
+      const link = pendingLink || undefined;
+      const response = await fetch('/api/pixels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ x, y, color, link, username })
+      });
+      const data = await response.json();
+      if (data.success) {
+        const key = `${x},${y}`;
+        pixels.update(p => {
+          p.set(key, { color, link, user: username });
+          return p;
+        });
+        coins -= pixelCost;
+        await fetchBalance();
+        showPicker = false;
+        pendingX = pendingY = null;
+      } else {
+        alert(data.error || 'Failed to place pixel');
+      }
+    }
+
+    function cancelPlace() {
+      showPicker = false;
+      pendingX = pendingY = null;
+    }
 </script>
 
  <div>
    <p>Username: {username}</p>
    <p>Coins: {coins}</p>
-   <canvas bind:this={canvas} width="1000" height="1000" on:click={handleClick} style="border: 1px solid black; cursor: pointer;"></canvas>
+   <canvas bind:this={canvas} width="1000" height="1000" on:click={handleClick} on:mousemove={handleMouseMove} on:mouseleave={handleMouseLeave} style="border: 1px solid black; cursor: pointer;"></canvas>
+  <label style="display:block; margin-top:8px;">
+    <input type="checkbox" bind:checked={allowOverride} /> Allow override (replace existing pixels)
+  </label>
+   {#if showPicker}
+     <div class="picker" style="left: {pickerStyle.left}; top: {pickerStyle.top};">
+       <label>Color: <input type="color" bind:value={selectedColor} /></label>
+       <label>Link: <input type="url" placeholder="https://example.com" bind:value={pendingLink} /></label>
+       <div class="picker-buttons">
+         <button on:click={confirmPlace}>Confirm</button>
+         <button on:click={cancelPlace}>Cancel</button>
+       </div>
+
+      
+     </div>
+   {/if}
     <h2>Leaderboard</h2>
     <ol>
       {#each leaderboard as [user, count]}
@@ -139,3 +237,34 @@
        <button type="submit">Increase Balance</button>
      </form>
  </div>
+
+    <style>
+      .picker {
+        position: fixed;
+        z-index: 1000;
+        background: white;
+        border: 1px solid #ccc;
+        padding: 8px;
+        width: 200px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .picker label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+      }
+      .picker input[type="url"] {
+        width: 110px;
+      }
+      .picker-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+    </style>

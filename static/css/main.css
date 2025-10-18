@@ -1,0 +1,30 @@
+.picker {
+          position: fixed;
+          z-index: 1000;
+          background: white;
+          border: 1px solid #ccc;
+          padding: 8px;
+          width: 200px;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+          border-radius: 6px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .picker label {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+          font-size: 14px;
+        }
+        .picker input[type="url"] {
+          width: 110px;
+        }
+        .picker-buttons {
+          display: flex;
+          justify-content: flex-end;
+          gap: 8px;
+        }
+
+    
