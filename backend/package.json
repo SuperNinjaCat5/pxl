@@ -1,0 +1,24 @@
+{
+  "name": "pxl",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/SuperNinjaCat5/pxl#readme",
+  "bugs": {
+    "url": "https://github.com/SuperNinjaCat5/pxl/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SuperNinjaCat5/pxl.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "./src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
