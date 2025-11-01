@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>pxl</title>
+  <title>Pixel - Home</title>
 </svelte:head>
 
 <script>

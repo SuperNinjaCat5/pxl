@@ -13,7 +13,7 @@
 </script>
 
 <svelte:head>
-    <title>pxl</title>
+    <title>Pixel - Account</title>
 </svelte:head>
 
 <h1 style="color: black;">Sorry no leeks</h1>

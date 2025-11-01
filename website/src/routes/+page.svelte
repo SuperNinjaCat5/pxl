@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>pxl</title>
+  <title>Pixel</title>
 </svelte:head>
 <script>
   import { signIn, signOut } from "@auth/sveltekit/client"
