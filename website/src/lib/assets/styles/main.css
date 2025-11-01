@@ -1,3 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+  font-family: 'Press Start 2P', cursive;
+}
+
 p {
-  color: red;
+  color: blue;
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;  
+  font-size: 1.2rem;
+
+}
+
+.pxl-logo {
+  height: 6rem;
+  width: auto;
+  image-rendering: pixelated;
 }
