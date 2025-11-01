@@ -13,11 +13,41 @@ p {
   align-items: center;
   gap: 0.5rem;  
   font-size: 1.2rem;
-
 }
 
 .pxl-logo {
-  height: 6rem;
+  height: 3.5rem;
   width: auto;
   image-rendering: pixelated;
+  vertical-align: middle;
+  
+}
+
+.home-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;      
+  max-width: 600px;   
+  width: 90%;          
+  /* justify-content: center; */
+  align-items: center;
+  min-height: 100vh; 
+}
+
+.hometext-center {
+  text-align: center;
+}
+
+button {
+  font-size: 0.7rem;
+  color: white;
+  background-color: #0078ff;
+  border: 3px solid #0078ff;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  image-rendering: pixelated;
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 #004c99;
+  transition: all 0.1s ease-in-out;
+
 }
