@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-    <title>pxl - Login</title>
+    <title>pxl</title>
 </svelte:head>
 
 {#if $page.data.session}
@@ -12,3 +12,10 @@
 {:else}
   <button on:click={() => signIn("github")}>Sign in with GitHub</button>
 {/if}
+
+{#if $page.data.session}
+  <p>Signed in as {$page.data.session.user?.email}</p>
+{:else}
+  <p>Not signed in</p>
+{/if}
+
