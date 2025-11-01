@@ -1,7 +1,19 @@
 <svelte:head>
   <title>pxl</title>
 </svelte:head>
-<script>import pxlTitle from '$lib/assets/pxl-title.png';</script>
+<script>import pxlTitle from '$lib/assets/pxl-title.png';
+
+  import { page } from '$app/stores'
+  import { goto } from '$app/navigation'
+  import { onMount } from 'svelte';
+
+  onMount(() => {
+    if ($page.data.session) {
+      goto('/home');
+    }
+  })
+</script>
+
 
 <div class="home-wrapper">
   <div class="hometext-center">
