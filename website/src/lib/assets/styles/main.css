@@ -23,5 +23,57 @@ button {
   text-transform: uppercase;
   box-shadow: 0 4px 0 #004c99;
   transition: all 0.1s ease-in-out;
+}
 
+.bitvualt-button {
+  font-size: 0.7rem;
+  color: white;
+  background-color: #0bb0da;
+  border: 3px solid #0078ff;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  image-rendering: pixelated;
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 #004c99;
+  position: relative; 
+  overflow: hidden;
+  transition: all 0.1s ease-in-out;
+}
+
+
+.bitvualt-button::before,
+.bitvualt-button::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  opacity: 1;
+  color: #00fff2; 
+  clip: rect(0, 0, 0, 0); 
+}
+
+.bitvualt-button::before {
+  animation: glitchTop 2s infinite linear alternate-reverse;
+}
+
+.bitvualt-button::after {
+  animation: glitchBottom 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitchTop {
+  0% { clip: rect(2px, 9999px, 5px, 0); transform: translate(-2px, -2px); }
+  20% { clip: rect(10px, 9999px, 12px, 0); transform: translate(2px, 2px); }
+  40% { clip: rect(5px, 9999px, 8px, 0); transform: translate(-1px, 1px); }
+  60% { clip: rect(8px, 9999px, 10px, 0); transform: translate(1px, -1px); }
+  80% { clip: rect(3px, 9999px, 6px, 0); transform: translate(-2px, 2px); }
+  100% { clip: rect(2px, 9999px, 5px, 0); transform: translate(0, 0); }
+}
+
+@keyframes glitchBottom {
+  0% { clip: rect(15px, 9999px, 18px, 0); transform: translate(2px, 2px); color: #00fff9; }
+  20% { clip: rect(12px, 9999px, 15px, 0); transform: translate(-2px, -1px); color: #00fff9; }
+  40% { clip: rect(18px, 9999px, 21px, 0); transform: translate(1px, 1px); color: #00fff9; }
+  60% { clip: rect(15px, 9999px, 18px, 0); transform: translate(-1px, 2px); color: #00fff9; }
+  80% { clip: rect(12px, 9999px, 15px, 0); transform: translate(2px, -2px); color: #00fff9; }
+  100% { clip: rect(15px, 9999px, 18px, 0); transform: translate(0, 0); color: #00fff9; }
 }
