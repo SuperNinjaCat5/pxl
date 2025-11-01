@@ -28,7 +28,14 @@
 <div>
   <h1>Welcome to pxl</h1>
   {#if $page.data.session}<h5>Signed in as {$page.data.session.user?.email}</h5>{:else}<h5>Not signed in</h5>{/if}
-  <a href="/bitvualt"><button class="bitvualt-button" data-text="Enter the Bitvault">Enter the Bitvault</button></a>
+  <a href="/bitvualt"><button class="bitvualt-button">
+  <span class="glitch-layer">Enter the Bitvault</span>
+  <span class="glitch-layer">Enter the Bitvault</span>
+  <span class="glitch-layer">Enter the Bitvault</span>
+  <span class="glitch-layer">Enter the Bitvault</span>
+  Enter the Bitvault
+  </button></a>
+
   
   <button on:click={() => signOut()}>Sign out</button>
 </div>
