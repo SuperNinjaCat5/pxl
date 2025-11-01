@@ -1,6 +1,6 @@
-<head>
+<svelte:head>
   <title>Pxl</title>
-</head>
+</svelte:head>
 
 
  <script lang="ts">

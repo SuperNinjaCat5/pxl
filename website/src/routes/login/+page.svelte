@@ -1,5 +1,5 @@
-<head>
+<svelte:head>
     <title>Pxl - Login</title>
-</head>
+</svelte:head>
 
 <p>freak u</p>
