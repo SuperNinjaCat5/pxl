@@ -2,8 +2,26 @@
   <title>pxl</title>
 </svelte:head>
 
-<div>
-  <h1>Welcome to pxl</h1>
+<script lang="ts">
+  import { signIn, signOut } from "@auth/sveltekit/client"
+  import { page } from "$app/stores"
+  import { goto } from '$app/navigation'
+  import { onMount } from "svelte";
 
-  <p><a href="/bitvualt">Edit the canvas?</a></p>
+  onMount(() => {
+    if ($page.data.session) {
+      return;
+    }
+    else {
+      goto('/')
+    }
+  })
+</script>
+
+<div>
+  <h1>Welcome to pxl</h1> 
+
+  <a href="/bitvualt"><button>Edit the canvas?</button></a>
+
+  <button on:click={() => signOut()}>Sign out</button>
 </div>
