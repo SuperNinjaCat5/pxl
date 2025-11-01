@@ -9,6 +9,8 @@
     <title>pxl</title>
 </svelte:head>
 
+<a href='/home'><h6>&lt;- Back To Home</h6></a>
+
 {#if $page.data.session}
   <p>Signed in as {$page.data.session.user?.email}</p>
 {:else}
