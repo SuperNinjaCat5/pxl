@@ -8,14 +8,19 @@
   import { onMount } from 'svelte';
   import { signOut } from '@auth/sveltekit/client';
 
-  const allowed_emails = ["web@niiccoo2.xyz"];
+  const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
   let email = null;
 
   onMount(() => {
     email = $page.data.session?.user?.email ?? null;
 
-    if (!email || !allowed_emails.includes(email)) {
-      goto('/account');
+    if (!email) {
+      goto('/');
+    }
+    else {
+      if (!allowed_emails.includes(email)) {
+        goto('/account')
+      }
     }
   });
 </script>
