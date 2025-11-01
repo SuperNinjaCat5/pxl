@@ -3,13 +3,20 @@
   import { page } from "$app/stores"
   import { goto } from '$app/navigation'
   import { onMount } from "svelte";
+  import { invalidate } from '$app/navigation';
+
+  async function handleSignOut() {
+    await signOut();     
+    await invalidate('.');    
+    goto('/');      
+  }
 </script>
 
 <svelte:head>
     <title>pxl</title>
 </svelte:head>
 
-<a href='/home'><h6>&lt;- Back To Home</h6></a>
+<h1 style="color: black;">Sorry no leeks</h1>
 
 {#if $page.data.session}
   <p>Signed in as {$page.data.session.user?.email}</p>
@@ -18,9 +25,7 @@
 {/if}
 
 {#if $page.data.session}
-  <button on:click={() => signOut()}>Sign out</button>
+<button on:click={handleSignOut}>Sign out</button>
 {:else}
-  <button on:click={() => signIn("github")}>Sign in with GitHub</button>
+<button on:click={() => signIn("github")}>Sign in with GitHub</button>
 {/if}
-
-

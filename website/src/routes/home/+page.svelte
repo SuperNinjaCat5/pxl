@@ -2,25 +2,24 @@
   <title>pxl</title>
 </svelte:head>
 
-<script lang="ts">
-  import { signIn, signOut } from "@auth/sveltekit/client";
-  import { page } from "$app/stores";
+<script>
+  import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { onMount } from "svelte";
+  import { onMount } from 'svelte';
+  import { signOut } from '@auth/sveltekit/client';
 
-  const allowed_emails = ["ben.elliott.2021@gmail.com", "web@niiccoo2.xyz"];
-  let email: string | null = null
+  const allowed_emails = ["web@niiccoo2.xyz"];
+  let email = null;
 
   onMount(() => {
-    email = $page.data.session?.user?.email ?? null; 
+    email = $page.data.session?.user?.email ?? null;
 
     if (!email || !allowed_emails.includes(email)) {
-      goto('/');
+      goto('/account');
     }
   });
 </script>
 
-{#if email && allowed_emails.includes(email)}
 <div>
   <h1>Welcome to pxl</h1>
   {#if $page.data.session}<h5>Signed in as {$page.data.session.user?.email}</h5>{:else}<h5>Not signed in</h5>{/if}
@@ -28,6 +27,3 @@
   
   <button on:click={() => signOut()}>Sign out</button>
 </div>
-{:else}
-<p>Loser</p>
-{/if}
