@@ -1,6 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400&display=swap');
 
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+}
+
+.page-content {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 :root {
   font-family: 'Press Start 2P', cursive;
 }
@@ -95,6 +106,8 @@ button {
 }
 
 .navbar {
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;

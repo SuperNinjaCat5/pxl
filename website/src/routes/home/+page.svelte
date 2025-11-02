@@ -38,7 +38,7 @@
     <button on:click={() => signOut()}>Sign out</button>
   </div>
 </div>
-<div>
+<div class="page-content">
   <br>
   
   <a href="/bitvualt"><button class="bitvualt-button">
