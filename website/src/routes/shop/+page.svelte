@@ -1,12 +1,12 @@
 <svelte:head>
-  <title>Pixel - Home</title>
+  <title>Pixel - Shop</title>
 </svelte:head>
-
 <script>
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
   import { signOut } from '@auth/sveltekit/client';
+  import '$lib/assets/styles/shop.css'
 
   const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
   let email = null;
@@ -24,9 +24,19 @@
     }
   });
 </script>
+
 <div class="navbar">
   <div class="nav-left">
-    <h1>Welcome to pxl</h1>
+    <a href="/home"><button>Home</button></a>
+    <a href="/bitvualt">
+      <button class="bitvualt-button">
+        <span class="glitch-layer">Enter the Bitvault</span>
+        <span class="glitch-layer">Enter the Bitvault</span>
+        <span class="glitch-layer">Enter the Bitvault</span>
+        <span class="glitch-layer">Enter the Bitvault</span>
+        Enter the Bitvault
+      </button>
+    </a>
   </div>
 
   <div class="nav-right">
@@ -38,16 +48,7 @@
     <button on:click={() => signOut()}>Sign out</button>
   </div>
 </div>
-<div>
-  <br>
-  
-  <a href="/bitvualt"><button class="bitvualt-button">
-  <span class="glitch-layer">Enter the Bitvault</span>
-  <span class="glitch-layer">Enter the Bitvault</span>
-  <span class="glitch-layer">Enter the Bitvault</span>
-  <span class="glitch-layer">Enter the Bitvault</span>
-  Enter the Bitvault
-  </button></a>
-  
-  <a href="/shop"><button>Shop</button></a>
+
+<div class="shop-wrapper">
+    <div class="item"></div>
 </div>
