@@ -1,0 +1,15 @@
+.admin-button {
+  color: #ffffff;
+  background-color: #cc6600c5;    
+  border: 3px dotted #ff9900;     
+  box-shadow: 0 4px 0 #994400;    
+  font-family: 'Press Start 2P', cursive;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.admin-button:hover {
+  background-color: #ff9900c5;    
+  box-shadow: 0 4px 0 #cc6600;   
+}

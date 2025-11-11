@@ -1,17 +1,24 @@
 <svelte:head>
-  <title>pxl</title>
+  <title>Pixel</title>
 </svelte:head>
-<script>import pxlTitle from '$lib/assets/pxl-title.png';</script>
+<script>
+  import { signIn, signOut } from "@auth/sveltekit/client"
+  import pxlTitle from '$lib/assets/pxl-title.png';
+  import '$lib/assets/styles/home.css'
 
-<div>
+  import { page } from '$app/stores'
+  import { goto } from '$app/navigation'
+  import { onMount } from 'svelte';
 
-  <p class="welcome text-center">
-    Welcome to
-    <img src={pxlTitle} alt="PXL logo" class="pxl-logo" />
-  </p>
+  onMount(() => {
+    if ($page.data.session) {
+      goto('/home');
+    }
+  })
+</script>
 
-  <a href=/login><button>Sign In?</button></a>
 
-  <a href=/home><p>rlly secret bypass</p></a>
-
+<div class="home-wrapper">
+  <img src={pxlTitle} alt="PXL logo" class="pxl-logo" />
+  <button on:click={() => signIn("github")}>Sign in with GitHub</button>
 </div>
