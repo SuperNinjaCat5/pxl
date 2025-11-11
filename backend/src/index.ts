@@ -1,9 +1,11 @@
-import express, { Application, Request, Response } from 'express';
+// index.ts
+import express from 'express';
+import type { Application, Request, Response } from 'express';
 
 const app: Application = express();
-const port: number = 3000;
+const port = 3000;
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, World!');
 });
 
