@@ -12,18 +12,21 @@ app.get('/', (_req, res) => res.json({ ok: true }));
 // place or overwrite a pixel
 app.post('/place', (req: Request, res: Response) => {
   const { x, y, color, placed_by } = req.body ?? {};
-  if (![x, y, color].every(n => Number.isInteger(n))) {
-    return res.status(400).json({ error: 'x, y, color must be integers' });
+  if (![x, y].every(n => Number.isInteger(n))) {
+    return res.status(400).json({ error: 'x and y must be integers' });
   }
   if (typeof placed_by !== 'string' || !placed_by) {
     return res.status(400).json({ error: 'placed_by (user id) required' });
+  }
+  if (typeof color !== 'string' || !color) {
+    return res.status(400).json({ error: 'color is required'})
   }
   if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) {
     return res.status(400).json({ error: 'out of bounds' });
   }
   upsertPixel.run({
     x, y,
-    color: color & 0xff, // palette index
+    color,
     placed_by,
     placed_at: Math.floor(Date.now() / 1000)
   });

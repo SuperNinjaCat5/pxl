@@ -13,7 +13,7 @@ db.exec(`
 CREATE TABLE IF NOT EXISTS pixels (
   x          INTEGER NOT NULL,
   y          INTEGER NOT NULL,
-  color      INTEGER NOT NULL,
+  color      TEXT NOT NULL,
   placed_by  TEXT    NOT NULL,
   placed_at  INTEGER NOT NULL,
   PRIMARY KEY (x, y)
