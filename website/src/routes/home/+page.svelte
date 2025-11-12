@@ -4,25 +4,7 @@
 
 <script>
   import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
   import { signOut } from '@auth/sveltekit/client';
-
-  const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
-  let email = null;
-
-  onMount(() => {
-    email = $page.data.session?.user?.email ?? null;
-
-    if (!email) {
-      goto('/');
-    }
-    else {
-      if (!allowed_emails.includes(email)) {
-        goto('/account')
-      }
-    }
-  });
 </script>
 <div class="navbar">
   <div class="nav-left">
