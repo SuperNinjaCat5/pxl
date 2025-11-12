@@ -7,6 +7,7 @@ const app: Application = express();
 app.use(express.json());
 
 app.get('/health', (_req, res) => res.json({ ok: true }));
+app.get('/', (_req, res) => res.json({ ok: true }));
 
 // place or overwrite a pixel
 app.post('/place', (req: Request, res: Response) => {
