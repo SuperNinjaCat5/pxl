@@ -19,7 +19,7 @@ app.get('/', (_req, res) => res.json({ ok: true }));
 // place or overwrite a pixel
 app.post('/place', (req: Request, res: Response) => {
   const { x, y, color, placed_by } = req.body ?? {};
-  console.log(`got request from ${placed_by} to place a ${color} pixel at (${x}, ${y})`)
+  console.log(`got request from ${placed_by} to place a ${color} pixel at (${x}, ${y})`);
 
   if (![x, y].every(n => Number.isInteger(n))) {
     return res.status(400).json({ error: 'x and y must be integers' });
@@ -40,13 +40,13 @@ app.post('/place', (req: Request, res: Response) => {
     placed_at: Date.now()
   });
 
-  console.log('placed pixel')
+  console.log('placed pixel');
   res.json({ ok: true });
 });
 
 // fetch a rectangle of pixels (sparse result)
 app.get('/pixels', (req: Request, res: Response) => {
-  console.log('got request for pixels')
+  console.log('got request for pixels');
   const x0 = parseInt(String(req.query.x0 ?? '0'), 10);
   const x1 = parseInt(String(req.query.x1 ?? WIDTH), 10);
   const y0 = parseInt(String(req.query.y0 ?? '0'), 10);
@@ -59,7 +59,7 @@ app.get('/pixels', (req: Request, res: Response) => {
     generated_at: Date.now() 
   }
 
-  console.log('returning', header, rows)
+  console.log('returning', header, rows);
   res.json([header, rows]); // [{x,y,color}, ...] only returns set pixels
 });
 
