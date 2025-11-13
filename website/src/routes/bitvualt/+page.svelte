@@ -1,28 +1,31 @@
-<svelte:head>
+<!-- <svelte:head>
   <title>Pixel - Bitvualt</title>
 </svelte:head>
 <script>
   import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
   import { signOut } from '@auth/sveltekit/client';
-  import '$lib/assets/styles/shop.css'
 
-  const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
-  let email = null;
+  let canvasWidth = 512
+  let canvasHeight = 512
 
-  onMount(() => {
-    email = $page.data.session?.user?.email ?? null;
+  let canvas;
+  let ctx;
 
-    if (!email) {
-      goto('/');
+  
+  function drawCanvas() {
+    if (!ctx) return;
+    
+    ctx.fillStyle = "#fff";
+    
+    
+    for (let pixel of dataset) {
+    if (pixel.x < canvasWidth && pixel.y < canvasHeight) {
+      ctx.fillStyle = palette[pixel.color] || "#000";
+      ctx.fillRect(pixel.x * pixelSize, pixel.y * pixelSize, pixelSize, pixelSize);
     }
-    else {
-      if (!allowed_emails.includes(email)) {
-        goto('/account')
-      }
-    }
-  });
+  }
+  }
+
 </script>
 
 <div class="navbar">
@@ -42,5 +45,9 @@
 </div>
 
 <div class="page-content">
-<p>Dis da canvas of bits</p>
-</div>
+  <canvas
+    bind:this={canvas}
+    style="border:1px solid black; image-rendering: pixelated;"
+    on:click={handleClick}>
+  </canvas>
+</div> -->
