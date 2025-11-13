@@ -75,10 +75,13 @@
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
 
-    const x = Math.floor((e.clientX - rect.left) * scaleX);
-    const y = Math.floor((e.clientY - rect.top) * scaleY);
+    let x = Math.floor((e.clientX - rect.left) * scaleX);
+    let y = Math.floor((e.clientY - rect.top) * scaleY);
 
-    console.log(`Found x and y: (${x}, ${y})`)
+    x = x/pixelSize;
+    y = y/pixelSize;
+
+    console.log(`Found x and y: (${x}, ${y})`);
 
     return { x, y };
   }
