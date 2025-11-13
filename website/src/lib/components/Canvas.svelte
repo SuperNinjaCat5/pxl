@@ -1,5 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { page } from '$app/stores';
+  
+  const URL = 'http://localhost:3000'
 
   type Pixel = {
     x: number;
@@ -25,6 +28,8 @@
 
   let error: String = '';
 
+  let currentColor: String = 'blue';
+
   // canvas setup
   let canvas: HTMLCanvasElement;
   const width = 512;  // total grid width
@@ -33,7 +38,7 @@
 
   onMount(async () => {
     try {
-      const res = await fetch('http://localhost:3000/pixels');
+      const res = await fetch(`${URL}/pixels`);
       if (!res.ok) throw new Error(`API error: ${res.status}`);
       const json = (await res.json()) as PixelResponse;
 
@@ -82,6 +87,22 @@
     const { x, y } = canvasToPixel(e);
 
     if (x < 0 || y < 0 || x >= width || y >= height) return;
+
+    // send request to api to place pixel
+    try {
+        const res = await fetch(`${URL}/place`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json' },
+          body: JSON.stringify({ x, y, color: currentColor, placed_by: $page.data?.session?.user?.email ?? 'null'})
+        });
+
+        if (!res.ok) {
+            console.error('Unable to place pixel:', await res.text())
+        }
+        console.log(`placed pixel at (${x}, ${y})`)
+    } catch (err) {
+        console.error('network error:', err)
+    }
   }
 </script>
 
