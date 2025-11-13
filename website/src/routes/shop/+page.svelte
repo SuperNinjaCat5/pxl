@@ -10,24 +10,7 @@
   import '$lib/assets/styles/shop.css'
   import Header from '$lib/components/Header.svelte';
 
-  import AdminButton from '$lib/components/AdminButton.svelte'; // idk what this was for but I removed it from the header,
-                                                                // if you want you can find a way to add it back
-
-  const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
-  let email = null;
-
-  onMount(() => {
-    email = $page.data.session?.user?.email ?? null;
-
-    if (!email) {
-      goto('/');
-    }
-    else {
-      if (!allowed_emails.includes(email)) {
-        goto('/account')
-      }
-    }
-  });
+  let user_is_admin = true // For now later use auth
 
 const products = [
   {
@@ -74,7 +57,7 @@ const products = [
   }];
 </script>
 
-<Header></Header>
+<Header home_button={true} bitvualt_button={true} shop_admin_button={user_is_admin}></Header>
 
 
 <div class="shop-wrapper">
