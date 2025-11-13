@@ -15,7 +15,7 @@ export const { handle } = SvelteKitAuth({
     Slack({
       clientId: process.env.AUTH_SLACK_ID!,
       clientSecret: process.env.AUTH_SLACK_SECRET!,
-      authorization: { params: { scope: "identity.basic identity.email" } }
+      authorization: { params: { scope: "email" } }
     })
   ],
   trustHost: true,
