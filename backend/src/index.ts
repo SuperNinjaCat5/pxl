@@ -41,6 +41,13 @@ app.get('/pixels', (req: Request, res: Response) => {
   const y1 = parseInt(String(req.query.y1 ?? HEIGHT - 1), 10);
 
   const rows = selectPixelsInRect.all({ x0, x1, y0, y1 });
+
+  // for (let x = 0; x <= WIDTH; x++) {
+  //   for (let y = 0; y <= HEIGHT; y++) {
+
+  //   }
+  // }
+
   res.json(rows); // [{x,y,color}, ...] only returns set pixels
 });
 
