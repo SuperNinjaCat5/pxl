@@ -28,7 +28,7 @@ app.post('/place', (req: Request, res: Response) => {
     x, y,
     color,
     placed_by,
-    placed_at: Math.floor(Date.now() / 1000)
+    placed_at: Date.now()
   });
   res.json({ ok: true });
 });
@@ -40,9 +40,16 @@ app.get('/pixels', (req: Request, res: Response) => {
   const y0 = parseInt(String(req.query.y0 ?? '0'), 10);
   const y1 = parseInt(String(req.query.y1 ?? HEIGHT), 10);
 
-  let rows = selectPixelsInRect.all({ x0, x1, y0, y1 });
+  const rows = selectPixelsInRect.all({ x0, x1, y0, y1 });
+  const header = {
+    width: WIDTH,
+    height: HEIGHT,
+    generated_at: Date.now() 
+  }
 
-  res.json(rows); // [{x,y,color}, ...] only returns set pixels
+
+
+  res.json([header, rows]); // [{x,y,color}, ...] only returns set pixels
 });
 
 const port = 3000;
