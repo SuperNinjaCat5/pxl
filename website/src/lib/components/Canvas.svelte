@@ -29,7 +29,7 @@
   let canvas: HTMLCanvasElement;
   const width = 512;  // total grid width
   const height = 512; // total grid height
-  const pixelSize = 3; // each pixel will be 20×20 screen pixels
+  const pixelSize = 5;
 
   onMount(async () => {
     try {
@@ -50,8 +50,8 @@
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = width; // gpt claims this is the internal size, and to set it like this
-    canvas.height = height; // but I think if we do this to make it height * pixel size
+    canvas.width = (width * pixelSize) + pixelSize;   // without the + pixelSize you can't see the last pixels...
+    canvas.height = (height * pixelSize) + pixelSize; // idk why but it prob makes sense somewhere
 
     // background
     ctx.fillStyle = 'white';
