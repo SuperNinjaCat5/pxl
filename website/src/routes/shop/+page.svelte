@@ -7,9 +7,11 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
-  import { signOut } from '@auth/sveltekit/client';
   import '$lib/assets/styles/shop.css'
-  import AdminButton from '$lib/components/AdminButton.svelte';
+  import Header from '$lib/components/Header.svelte';
+
+  import AdminButton from '$lib/components/AdminButton.svelte'; // idk what this was for but I removed it from the header,
+                                                                // if you want you can find a way to add it back
 
   const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
   let email = null;
@@ -72,30 +74,7 @@ const products = [
   }];
 </script>
 
-<div class="navbar">
-  <div class="nav-left">
-    <a href="/home"><button>Home</button></a>
-    <a href="/bitvualt">
-      <button class="bitvualt-button">
-        <span class="glitch-layer">Enter the Bitvault</span>
-        <span class="glitch-layer">Enter the Bitvault</span>
-        <span class="glitch-layer">Enter the Bitvault</span>
-        <span class="glitch-layer">Enter the Bitvault</span>
-        Enter the Bitvault
-      </button>
-    </a>
-    <AdminButton location='/admin/shop' title='Shop Edit'></AdminButton>
-  </div>
-
-  <div class="nav-right">
-    {#if $page.data.session}
-      <span class="account-navbar">Signed in as {$page.data.session.user?.email}</span>
-    {:else}
-      <span class="account-navbar">Not signed in</span>
-    {/if}
-    <button on:click={() => signOut()}>Sign out</button>
-  </div>
-</div>
+<Header></Header>
 
 
 <div class="shop-wrapper">

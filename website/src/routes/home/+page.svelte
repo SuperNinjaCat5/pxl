@@ -3,23 +3,11 @@
 </svelte:head>
 
 <script>
-  import { page } from '$app/stores';
-  import { signOut } from '@auth/sveltekit/client';
+  import Header from '$lib/components/Header.svelte';
 </script>
-<div class="navbar">
-  <div class="nav-left">
-    <h1>Welcome to pxl</h1>
-  </div>
 
-  <div class="nav-right">
-    {#if $page.data.session}
-      <span class="account-navbar">Signed in as {$page.data.session.user?.email}</span>
-    {:else}
-      <span class="account-navbar">Not signed in</span>
-    {/if}
-    <button on:click={() => signOut()}>Sign out</button>
-  </div>
-</div>
+<Header></Header>
+
 <div class="page-content">
   <br>
   
