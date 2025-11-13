@@ -6,8 +6,29 @@
   import { onMount } from 'svelte';
   import Header from '$lib/components/Header.svelte';
 
-  // your sample pixel data
-  const pixels = [{ x: 1, y: 1, color: 'red' },{ x: 3, y: 1, color: 'blue' },{ x: 100, y: 1, color: 'red' },{ x: 8, y: 6, color: 'blue' }];
+  type Pixel = {
+    x: number;
+    y: number;
+    color: string;
+  };
+
+  type Header = {
+    width: number;
+    height: number;
+    generated_at: number;
+  };
+
+  type PixelResponse = [
+    Header,
+    Pixel[]
+  ];
+
+  // let pixels = [{ x: 1, y: 1, color: 'red' },{ x: 3, y: 1, color: 'blue' },{ x: 100, y: 1, color: 'red' },{ x: 8, y: 6, color: 'blue' }];
+  
+  let header: Header | null = null;
+  let pixels: Pixel[] = [];
+
+  let error: String = '';
 
   // canvas setup
   let canvas: HTMLCanvasElement;
@@ -15,7 +36,22 @@
   const height = 512; // total grid height
   const pixelSize = 3; // each pixel will be 20×20 screen pixels
 
-  onMount(() => {
+  onMount(async () => {
+    try {
+      const res = await fetch('http://localhost:3000/pixels');
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
+      const json = (await res.json()) as PixelResponse;
+
+      header = json[0];
+      pixels = json[1];
+
+      console.log('header:', header);
+      console.log('pixels:', pixels);
+    } catch (err) {
+      error = String(err)
+      console.error('Fetch failed:', err);
+    }
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -37,6 +73,9 @@
 <Header></Header>
 
 <div class="page-content">
+  {#if error}
+    <p>Error: {error}</p>
+  {:else}
   <canvas
     bind:this={canvas}
     style="border:1px solid black;
@@ -46,4 +85,5 @@
   </canvas> 
   <!-- on:click={handleClick}> -->
   <!-- ^ was inside of that but not needed yet -->
+   {/if}
 </div>
