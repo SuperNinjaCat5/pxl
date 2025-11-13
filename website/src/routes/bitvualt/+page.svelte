@@ -76,13 +76,15 @@
   {#if error}
     <p>Error: {error}</p>
   {:else}
-  <canvas
-    bind:this={canvas}
-    style="border:1px solid black;
-           image-rendering: pixelated;
-           width: {width * pixelSize}px;
-           height: {height * pixelSize}px;">
-  </canvas> 
+  <div>
+    <canvas
+      bind:this={canvas}
+      style="image-rendering: pixelated;
+            width: {width * pixelSize}px;
+            height: {height * pixelSize}px;"
+      class='canvas'>
+    </canvas> 
+  </div>
   <!-- on:click={handleClick}> -->
   <!-- ^ was inside of that but not needed yet -->
    {/if}

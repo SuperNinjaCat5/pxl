@@ -118,6 +118,12 @@ button {
   box-shadow: 0 4px 0 #004c99;
 }
 
+.canvas {
+  border: 3px solid #0077ff;
+  box-shadow: 4px 4px 0 #004c99;
+  margin: 1rem;
+}
+
 .navbar a {
   text-decoration: none;
 }
