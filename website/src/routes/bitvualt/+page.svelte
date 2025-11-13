@@ -13,13 +13,16 @@
   let canvas: HTMLCanvasElement;
   const width = 512;  // total grid width
   const height = 512; // total grid height
-  const pixelSize = 5; // each pixel will be 20×20 screen pixels
+  const pixelSize = 3; // each pixel will be 20×20 screen pixels
 
   onMount(() => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // optional background
+    canvas.width = width; // gpt claims this is the internal size, and to set it like this
+    canvas.height = height; // but I think if we do this to make it height * pixel size
+
+    // background
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, width * pixelSize, height * pixelSize);
 
@@ -36,7 +39,11 @@
 <div class="page-content">
   <canvas
     bind:this={canvas}
-    style="border:1px solid black; image-rendering: pixelated;"
-    on:click={handleClick}>
-  </canvas>
+    style="border:1px solid black;
+           image-rendering: pixelated;
+           width: {width * pixelSize}px;
+           height: {height * pixelSize}px;">
+  </canvas> 
+  <!-- on:click={handleClick}> -->
+  <!-- ^ was inside of that but not needed yet -->
 </div>
