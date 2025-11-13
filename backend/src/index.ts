@@ -36,17 +36,11 @@ app.post('/place', (req: Request, res: Response) => {
 // fetch a rectangle of pixels (sparse result)
 app.get('/pixels', (req: Request, res: Response) => {
   const x0 = parseInt(String(req.query.x0 ?? '0'), 10);
-  const x1 = parseInt(String(req.query.x1 ?? WIDTH - 1), 10);
+  const x1 = parseInt(String(req.query.x1 ?? WIDTH), 10);
   const y0 = parseInt(String(req.query.y0 ?? '0'), 10);
-  const y1 = parseInt(String(req.query.y1 ?? HEIGHT - 1), 10);
+  const y1 = parseInt(String(req.query.y1 ?? HEIGHT), 10);
 
-  const rows = selectPixelsInRect.all({ x0, x1, y0, y1 });
-
-  // for (let x = 0; x <= WIDTH; x++) {
-  //   for (let y = 0; y <= HEIGHT; y++) {
-
-  //   }
-  // }
+  let rows = selectPixelsInRect.all({ x0, x1, y0, y1 });
 
   res.json(rows); // [{x,y,color}, ...] only returns set pixels
 });
