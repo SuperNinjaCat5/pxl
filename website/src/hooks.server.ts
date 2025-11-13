@@ -1,6 +1,7 @@
 import { SvelteKitAuth } from "@auth/sveltekit";
 import GitHub from "@auth/core/providers/github";
 import { GITHUB_ID, GITHUB_SECRET, AUTH_SECRET } from "$env/static/private";
+import Slack from "@auth/sveltekit/providers/slack"
 
 export const { handle } = SvelteKitAuth({
   secret: AUTH_SECRET,
@@ -10,6 +11,11 @@ export const { handle } = SvelteKitAuth({
       clientSecret: GITHUB_SECRET,
       // ask for access to all emails
       authorization: { params: { scope: "read:user user:email" } }
+    }),
+    Slack({
+      clientId: process.env.AUTH_SLACK_ID!,
+      clientSecret: process.env.AUTH_SLACK_SECRET!,
+      authorization: { params: { scope: "identity.basic identity.email" } }
     })
   ],
   trustHost: true,

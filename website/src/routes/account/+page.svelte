@@ -28,4 +28,5 @@
 <button on:click={handleSignOut}>Sign out</button>
 {:else}
 <button on:click={() => signIn("github")}>Sign in with GitHub</button>
+<button on:click={() => signIn("slack")}>Sign in with Slack</button>
 {/if}
