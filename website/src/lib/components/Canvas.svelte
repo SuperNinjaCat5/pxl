@@ -50,8 +50,8 @@
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = (width * pixelSize) + pixelSize;   // without the + pixelSize you can't see the last pixels...
-    canvas.height = (height * pixelSize) + pixelSize; // idk why but it prob makes sense somewhere
+    canvas.width = (width * pixelSize);
+    canvas.height = (height * pixelSize);
 
     // background
     ctx.fillStyle = 'white';
@@ -63,6 +63,26 @@
       ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
     }
   });
+
+  function canvasToPixel(e: MouseEvent | PointerEvent) {
+    const rect = canvas.getBoundingClientRect();
+    // scale from CSS size → internal canvas size
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    const x = Math.floor((e.clientX - rect.left) * scaleX);
+    const y = Math.floor((e.clientY - rect.top) * scaleY);
+
+    console.log(`Found x and y: (${x}, ${y})`)
+
+    return { x, y };
+  }
+
+  async function placePixel(e: MouseEvent | PointerEvent) {
+    const { x, y } = canvasToPixel(e);
+
+    if (x < 0 || y < 0 || x >= width || y >= height) return;
+  }
 </script>
 
 <div class="page-content">
@@ -75,10 +95,11 @@
       style="image-rendering: pixelated;
             width: {width * pixelSize}px;
             height: {height * pixelSize}px;"
-      class='canvas'>
+      class='canvas'
+      on:click={placePixel}>
     </canvas> 
   </div>
-  <!-- on:click={handleClick}> -->
+  <!--  -->
   <!-- ^ was inside of that but not needed yet -->
    {/if}
 </div>

@@ -28,7 +28,7 @@ app.post('/place', (req: Request, res: Response) => {
   if (typeof color !== 'string' || !color) {
     return res.status(400).json({ error: 'color is required'})
   }
-  if (x < 0 || y < 0 || x > WIDTH || y > HEIGHT) {
+  if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) {
     return res.status(400).json({ error: 'out of bounds' });
   }
   upsertPixel.run({
