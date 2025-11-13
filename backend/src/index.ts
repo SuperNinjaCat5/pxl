@@ -2,9 +2,16 @@
 import express from 'express';
 import type { Application, Request, Response } from 'express';
 import { WIDTH, HEIGHT, upsertPixel, selectPixelsInRect } from './db';
+import cors from 'cors';
 
 const app: Application = express();
 app.use(express.json());
+
+app.use(cors({
+  origin: 'http://localhost:5173', // Svelte dev server
+  // methods: ['GET','POST','OPTIONS'],
+  // allowedHeaders: ['Content-Type'],
+}));
 
 app.get('/health', (_req, res) => res.json({ ok: true }));
 app.get('/', (_req, res) => res.json({ ok: true }));
