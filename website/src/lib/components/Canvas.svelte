@@ -78,8 +78,8 @@
     let x = Math.floor((e.clientX - rect.left) * scaleX);
     let y = Math.floor((e.clientY - rect.top) * scaleY);
 
-    x = x/pixelSize;
-    y = y/pixelSize;
+    x = Math.round(x/pixelSize);
+    y = Math.round(y/pixelSize);
 
     console.log(`Found x and y: (${x}, ${y})`);
 
