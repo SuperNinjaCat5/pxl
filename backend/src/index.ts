@@ -7,6 +7,13 @@ import cors from 'cors';
 const app: Application = express();
 app.use(express.json());
 
+interface User { // chatgpt to fix ts bs
+  user_id: number;
+  email: string;
+  api_key: string;
+  admin_level: number;
+}
+
 app.use(cors({
   origin: 'http://localhost:5173', // Svelte dev server
   // methods: ['GET','POST','OPTIONS'],
@@ -63,21 +70,38 @@ app.get('/pixels/get', (req: Request, res: Response) => {
   res.json([header, rows]); // [{x,y,color}, ...] only returns set pixels
 });
 
-app.post('/users/new', (req: Request, res: Response) => {
+app.post('/users/new', (req: Request, res: Response) => { // TESTING ONLY
   const { email, api_key } = req.body ?? {};
   const user_permission_level = 0
   console.log('got request for new user');
-
-  if (getUserFromEmail.run({email})) { // Check if user exists
+  
+  var existingUser = getUserFromEmail.get({ email });
+  if (existingUser != null) { // Check if user exists
     console.log('user exists')
     res.json({ok: false, error: 'user exists'})
   }
+  existingUser = null
 
   addUser.run({email,api_key,user_permission_level})
   console.log('Added user')
-  res.json({ok: false})
+  res.json({ok: true, api_key: api_key}) // Return api key
 
 });
+
+app.get('/users/get', (req: Request, res: Response) => {
+  const email = req.query.email as string;
+  const api_key = req.query.api_key as string;
+
+  const userK = getUserFromEmail.get({ email }) as User | undefined;
+
+  if (!userK || userK.admin_level <= -1) {
+    console.log(userK);
+    return res.json({ ok: false, error: 'no permission' });
+  }
+
+  res.json({ ok: true, user: userK });
+});
+
 
 const port = 3000;
 app.listen(port, () => {
