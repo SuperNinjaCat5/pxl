@@ -41,13 +41,17 @@ ON CONFLICT(x, y) DO UPDATE SET
 `);
 
 export const addUser = db.prepare(`
-INSERT INTO users (email,api_key,admin_level)`)
+  INSERT INTO users (email, api_key, admin_level)
+  VALUES (:email, :api_key, :user_permission_level)
+`);
 
 export const getUserFromKey = db.prepare(`
-SELECT api_key FROM pixels`)
+  SELECT * FROM users WHERE api_key = :api_key
+`);
 
 export const getUserFromEmail = db.prepare(`
-SELECT email FROM pixels`)
+  SELECT * FROM users WHERE email = :email
+`);
 
 export const selectPixelsInRect = db.prepare(`
 SELECT x, y, color FROM pixels
