@@ -17,7 +17,7 @@ app.get('/health', (_req, res) => res.json({ ok: true }));
 app.get('/', (_req, res) => res.json({ ok: true }));
 
 // place or overwrite a pixel
-app.post('/place', (req: Request, res: Response) => {
+app.post('/pixels/place', (req: Request, res: Response) => {
   const { x, y, color, placed_by } = req.body ?? {};
   console.log(`got request from ${placed_by} to place a ${color} pixel at (${x}, ${y})`);
 
@@ -45,7 +45,7 @@ app.post('/place', (req: Request, res: Response) => {
 });
 
 // fetch a rectangle of pixels (sparse result)
-app.get('/pixels', (req: Request, res: Response) => {
+app.get('/pixels/get', (req: Request, res: Response) => {
   console.log('got request for pixels');
   const x0 = parseInt(String(req.query.x0 ?? '0'), 10);
   const x1 = parseInt(String(req.query.x1 ?? WIDTH), 10);
