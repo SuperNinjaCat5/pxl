@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
+
+  export let editable = true;
   
   const URL = 'http://localhost:3000'
 
@@ -88,10 +90,13 @@
 
   async function placePixel(e: MouseEvent | PointerEvent) {
     const { x, y } = canvasToPixel(e);
-
+    
     if (x < 0 || y < 0 || x >= width || y >= height) return;
+    
+    if (editable == false) {return;} // Stop user from placing if the canvas is not editable
 
     // send request to api to place pixel
+
     try {
         const res = await fetch(`${URL}/place`, {
           method: 'POST',

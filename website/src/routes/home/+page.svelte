@@ -4,6 +4,7 @@
 
 <script>
   import Header from '$lib/components/Header.svelte';
+  import Canvas from '$lib/components/Canvas.svelte';
 </script>
 
 <Header welcome_message={true}></Header>
@@ -20,4 +21,6 @@
   </button></a>
   
   <a href="/shop"><button>Shop</button></a>
+
+  <Canvas editable={false}></Canvas>
 </div>

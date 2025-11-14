@@ -1,7 +1,6 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import '$lib/assets/styles/main.css'
-	import AdminButton from '$lib/components/AdminButton.svelte';
 	
 	// Imports:
 	import pxlTitle from '$lib/assets/pxl-title.png';
