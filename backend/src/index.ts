@@ -1,8 +1,10 @@
 // src/index.ts
 import express from 'express';
+import { ExpressAuth } from "@auth/express"
 import type { Application, Request, Response } from 'express';
 import { WIDTH, HEIGHT, upsertPixel, selectPixelsInRect, getUserFromKey, getUserFromEmail, addUser } from './db';
 import cors from 'cors';
+
 
 const app: Application = express();
 app.use(express.json());

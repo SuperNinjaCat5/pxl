@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@auth/express": "^0.12.1"
+  }
+}
