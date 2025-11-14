@@ -1,7 +1,7 @@
 // src/index.ts
 import express from 'express';
 import type { Application, Request, Response } from 'express';
-import { WIDTH, HEIGHT, upsertPixel, selectPixelsInRect } from './db';
+import { WIDTH, HEIGHT, upsertPixel, selectPixelsInRect, getUserFromKey, getUserFromEmail, addUser } from './db';
 import cors from 'cors';
 
 const app: Application = express();
@@ -61,6 +61,22 @@ app.get('/pixels/get', (req: Request, res: Response) => {
 
   console.log('returning', header, rows);
   res.json([header, rows]); // [{x,y,color}, ...] only returns set pixels
+});
+
+app.post('/users/new', (req: Request, res: Response) => {
+  const { email, api_key } = req.body ?? {};
+  const user_permission_level = 0
+  console.log('got request for new user');
+
+  if (getUserFromEmail.run({email})) { // Check if user exists
+    console.log('user exists')
+    res.json({ok: false, error: 'user exists'})
+  }
+
+  addUser.run({email,api_key,user_permission_level})
+  console.log('Added user')
+  res.json({ok: false})
+
 });
 
 const port = 3000;

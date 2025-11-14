@@ -40,6 +40,15 @@ ON CONFLICT(x, y) DO UPDATE SET
   placed_at = excluded.placed_at
 `);
 
+export const addUser = db.prepare(`
+INSERT INTO users (email,api_key,admin_level)`)
+
+export const getUserFromKey = db.prepare(`
+SELECT api_key FROM pixels`)
+
+export const getUserFromEmail = db.prepare(`
+SELECT email FROM pixels`)
+
 export const selectPixelsInRect = db.prepare(`
 SELECT x, y, color FROM pixels
 WHERE x BETWEEN @x0 AND @x1 AND y BETWEEN @y0 AND @y1
