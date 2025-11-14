@@ -20,6 +20,15 @@ CREATE TABLE IF NOT EXISTS pixels (
 ) WITHOUT ROWID;
 
 CREATE INDEX IF NOT EXISTS idx_pixels_placed_at ON pixels(placed_at);
+CREATE TABLE IF NOT EXISTS users (
+  user_id      INTEGER NOT NULL,
+  email        TEXT NOT NULL,
+  api_key      TEXT,
+  admin_level  INTEGER NOT NULL,
+  PRIMARY KEY (user_id)
+) WITHOUT ROWID;
+
+CREATE INDEX IF NOT EXISTS idx_pixels_placed_at ON pixels(placed_at);
 `);
 
 export const upsertPixel = db.prepare(`
