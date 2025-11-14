@@ -1,12 +1,25 @@
 <script lang=ts>
   import { page } from '$app/stores';
   import { signOut } from '@auth/sveltekit/client';
+  import AdminButton from '$lib/components/AdminButton.svelte';
+  export let message = '';
+  export let welcome_message = false;
+  export let home_button = false;
+  export let shop_button = false;
+  export let bitvualt_button = false;
+  export let shop_admin_button = false;
+  export let ship_admin_button = false;
 </script>
 
-<div class="navbar">
+<div class="navbar">  
   <div class="nav-left">
-    <a href="/home"><button>Home</button></a>
-    <a href="/shop"><button>Shop</button></a>
+    {#if message}<h1>{message}</h1>{/if} <!--Custom Message-->
+    {#if welcome_message}<h1>Welcome to Pxl</h1>{/if}
+    {#if home_button}<a href="/home"><button>Home</button></a>{/if}
+    {#if shop_button}<a href="/shop"><button>Shop</button></a>{/if}
+    {#if bitvualt_button}<a href="/bitvualt"><button class="bitvualt-button"><span class="glitch-layer">Enter the Bitvault</span><span class="glitch-layer">Enter the Bitvault</span><span class="glitch-layer">Enter the Bitvault</span><span class="glitch-layer">Enter the Bitvault</span>Enter the Bitvault</button></a>{/if}
+    {#if shop_admin_button}<AdminButton location='/admin/shop' title='Shop Edit'></AdminButton>{/if}
+    {#if ship_admin_button}<AdminButton location='/admin/shop' title='Shop Edit'></AdminButton>{/if}
   </div>
 
   <div class="nav-right">

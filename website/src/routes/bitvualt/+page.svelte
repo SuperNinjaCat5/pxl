@@ -7,6 +7,6 @@
   import Canvas from '$lib/components/Canvas.svelte'
 </script>
 
-<Header></Header>
+<Header home_button={true} shop_button={true}></Header>
 
 <Canvas></Canvas>

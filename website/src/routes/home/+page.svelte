@@ -6,7 +6,7 @@
   import Header from '$lib/components/Header.svelte';
 </script>
 
-<Header></Header>
+<Header welcome_message={true}></Header>
 
 <div class="page-content">
   <br>
