@@ -4,7 +4,7 @@
 
   export let editable = true;
   
-  const URL = 'http://localhost:3000'
+  // const URL = '/'
 
   type Pixel = {
     x: number;
@@ -40,7 +40,7 @@
 
   onMount(async () => {
     try {
-      const res = await fetch(`${URL}/pixels/get`);
+      const res = await fetch(`/api/pixels/get`);
       if (!res.ok) throw new Error(`API error: ${res.status}`);
       const json = (await res.json()) as PixelResponse;
 
@@ -98,7 +98,7 @@
     // send request to api to place pixel
 
     try {
-        const res = await fetch(`${URL}/pixels/place`, {
+        const res = await fetch(`/api/pixels/place`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json' },
           body: JSON.stringify({ x, y, color: currentColor, placed_by: $page.data?.session?.user?.email ?? 'null'})

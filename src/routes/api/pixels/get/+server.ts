@@ -10,7 +10,7 @@ export const GET: RequestHandler = async ({ url }) => {
     const y0 = qp.get('y0') ? Number.parseInt(qp.get('y0')!, 10) : undefined;
     const y1 = qp.get('y1') ? Number.parseInt(qp.get('y1')!, 10) : undefined;
 
-    const rows = selectPixelsInRect({ x0, x1, y0, y1 });
+    const rows = selectPixelsInRect.all({ x0, x1, y0, y1 });
     const header = {
         width: WIDTH,
         height: HEIGHT,

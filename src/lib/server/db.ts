@@ -1,7 +1,7 @@
 // @ts-ignore: no type declarations for better-sqlite3
 import Database from "better-sqlite3";
 
-const db = new Database("db.sqlite");
+const db = new Database("pxl.sqlite");
 
 export const WIDTH = 512;
 export const HEIGHT = 512;
