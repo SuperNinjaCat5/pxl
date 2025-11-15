@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserFromEmail, addUser } from "$lib/server/db";
 
-export const GET: RequestHandler = async ( event ) => {
+export const GET: RequestHandler = async ( event ) => { // Checks if a user in the DB, if not adds them
     // this will check if the user exists and if not make an account
     const session = await event.locals.auth();
 
@@ -11,9 +11,6 @@ export const GET: RequestHandler = async ( event ) => {
 
     const email = session.user.email
 
-
-    const user_permission_level: Number = 0 // Why do we need a var for this?
-    
     console.log('got request for new user');
 
     var existingUser = getUserFromEmail.get({ email });
@@ -23,7 +20,7 @@ export const GET: RequestHandler = async ( event ) => {
     }
 
     existingUser = null;
-    addUser.run(email, user_permission_level);
+    addUser.run(email, 0);
 
     console.log('added user');
 
