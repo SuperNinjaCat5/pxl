@@ -1,9 +1,10 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [sveltekit(), basicSsl()],
 	server: {
-		allowedHosts: ["811e86c0b238.ngrok-free.app"]
+		allowedHosts: [".ngrok-free.app"],
 	}
 });
