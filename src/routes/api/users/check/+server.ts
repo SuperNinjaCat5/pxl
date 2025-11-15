@@ -4,7 +4,7 @@ import { getUserFromEmail, addUser } from "$lib/server/db";
 export const GET: RequestHandler = async ({ url }) => {
     // this will check if the user exists and if not make an account
     const email: String = 'test@hackclub.com' // this will have to get the email from auth
-    const user_permission_level: Number = 0 // Why do we need a var for this? Because .run was getting mad, you can remove it
+    const user_permission_level: Number = 0 // Why do we need a var for this?
     
     console.log('got request for new user');
 
