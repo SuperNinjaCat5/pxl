@@ -1,11 +1,11 @@
-// src/db.ts
-import Database from 'better-sqlite3';
-import path from 'node:path';
+// @ts-ignore: no type declarations for better-sqlite3
+import Database from "better-sqlite3";
+
+const db = new Database("db.sqlite");
 
 export const WIDTH = 512;
 export const HEIGHT = 512;
 
-const db = new Database(path.join(process.cwd(), 'pxl.sqlite'));
 db.pragma('journal_mode = WAL');
 db.pragma('synchronous = NORMAL');
 
