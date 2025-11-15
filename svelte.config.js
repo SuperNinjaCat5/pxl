@@ -1,6 +1,6 @@
 // Remove the import for adapter-node.
 // import adapter from '@sveltejs/adapter-node'; 
-import adapter from '@sveltejs/adapter-vercel'; // ⬅️ NEW IMPORT
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
