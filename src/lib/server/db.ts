@@ -1,7 +1,11 @@
 // @ts-ignore: no type declarations for better-sqlite3
 import Database from "better-sqlite3";
 
-const db = new Database("pxl.sqlite");
+const dbPath = process.env.DB_PATH ?? "pxl.sqlite";
+console.log("Using DB at", dbPath);
+
+const db = new Database(dbPath);
+
 
 export const WIDTH = 512;
 export const HEIGHT = 512;
