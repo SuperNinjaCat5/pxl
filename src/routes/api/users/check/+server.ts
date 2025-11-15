@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ( event ) => { // Checks if a user in t
 
     const email = session.user.email
 
-    console.log('got request for new user');
+    console.log('got request to check user');
 
     var existingUser = getUserFromEmail.get({ email });
     if (existingUser != null) { // Check if user exists
@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ( event ) => { // Checks if a user in t
     }
 
     existingUser = null;
-    addUser.run(email, 0);
+    addUser.run({ email: email, user_permission_level: 3 });
 
     console.log('added user');
 

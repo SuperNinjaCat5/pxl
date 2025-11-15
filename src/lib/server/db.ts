@@ -34,7 +34,6 @@ CREATE INDEX IF NOT EXISTS idx_pixels_placed_at ON pixels(placed_at);
 CREATE TABLE IF NOT EXISTS users (
   user_id INTEGER PRIMARY KEY AUTOINCREMENT,
   email        TEXT NOT NULL,
-  api_key      TEXT,
   admin_level  INTEGER NOT NULL
 );
 
@@ -51,13 +50,13 @@ ON CONFLICT(x, y) DO UPDATE SET
 `);
 
 export const addUser = db.prepare(`
-  INSERT INTO users (email, api_key, admin_level)
-  VALUES (:email, :api_key, :user_permission_level)
+  INSERT INTO users (email, admin_level)
+  VALUES (:email, :user_permission_level)
 `);
 
-export const getUserFromKey = db.prepare(`
-  SELECT * FROM users WHERE api_key = :api_key
-`);
+// export const getUserFromKey = db.prepare(`
+//   SELECT * FROM users WHERE ap i_key = :a pi_key
+// `);
 
 export const getUserFromEmail = db.prepare(`
   SELECT * FROM users WHERE email = :email

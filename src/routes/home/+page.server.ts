@@ -1,7 +1,8 @@
 import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, fetch }) => {
+  await fetch('/api/users/check');
   const session = await locals.auth();
 
   const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
