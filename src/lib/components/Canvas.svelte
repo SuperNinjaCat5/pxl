@@ -73,6 +73,7 @@
 
   function canvasToPixel(e: MouseEvent | PointerEvent) {
     const rect = canvas.getBoundingClientRect();
+
     // scale from CSS size → internal canvas size
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
@@ -84,6 +85,8 @@
     y = Math.round(y/pixelSize);
 
     console.log(`Found x and y: (${x}, ${y})`);
+    
+    if (editable == false) {console.log(`In read-only canvas mode, so not sending request to place pixel`)}
 
     return { x, y };
   }
@@ -128,7 +131,5 @@
       on:click={placePixel}>
     </canvas> 
   </div>
-  <!--  -->
-  <!-- ^ was inside of that but not needed yet -->
    {/if}
 </div>
