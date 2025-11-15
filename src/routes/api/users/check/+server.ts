@@ -1,9 +1,17 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserFromEmail, addUser } from "$lib/server/db";
 
-export const GET: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ( event ) => {
     // this will check if the user exists and if not make an account
-    const email: String = 'test@hackclub.com' // this will have to get the email from auth
+    const session = await event.locals.auth();
+
+    if (!session || !session.user?.email) {
+        return new Response("Unauthorized", { status: 401 });
+    }
+
+    const email = session.user.email
+
+
     const user_permission_level: Number = 0 // Why do we need a var for this?
     
     console.log('got request for new user');
