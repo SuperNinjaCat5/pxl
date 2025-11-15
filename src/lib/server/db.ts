@@ -1,11 +1,18 @@
 // @ts-ignore: no type declarations for better-sqlite3
 import Database from "better-sqlite3";
+import fs from "node:fs";
+import path from "node:path";
 
 const dbPath = process.env.DB_PATH ?? "pxl.sqlite";
 console.log("Using DB at", dbPath);
 
-const db = new Database(dbPath);
+// make sure the directory exists
+const dir = path.dirname(dbPath);
+if (dir && dir !== "." && !fs.existsSync(dir)) {
+  fs.mkdirSync(dir, { recursive: true });
+}
 
+const db = new Database(dbPath);
 
 export const WIDTH = 512;
 export const HEIGHT = 512;
