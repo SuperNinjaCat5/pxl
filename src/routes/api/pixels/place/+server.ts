@@ -1,7 +1,23 @@
-import type { RequestHandler } from "@sveltejs/kit";
+// src/routes/api/pixels/place/+server.ts
+import type { RequestHandler } from "./$types";
 import { HEIGHT, WIDTH, upsertPixel } from "$lib/server/db";
 
-export const POST: RequestHandler = async ({ request }) => {
+function jsonError(message: string, status: number) {
+  return new Response(JSON.stringify({ error: message }), {
+    status,
+    headers: { "Content-Type": "application/json" }
+  });
+}
+
+export const POST: RequestHandler = async (event) => {
+  const session = await event.locals.auth();
+
+  // Require login
+  if (!session || !session.user?.email) {
+    return jsonError("Unauthorized", 401);
+  }
+
+  const { request } = event;
   const body = (await request.json()) as {
     x?: number;
     y?: number;
@@ -9,57 +25,34 @@ export const POST: RequestHandler = async ({ request }) => {
   } | undefined;
 
   const { x, y, color } = body ?? {};
-  const placed_by: String = 'test@hackclub.com' // this will be from auth
-
-  console.log(`got request from ${placed_by} to place a ${color} pixel at (${x}, ${y})`);
 
   if (x == null || y == null || !Number.isInteger(x) || !Number.isInteger(y)) {
-    return new Response(JSON.stringify({error: 'x and y must be integers'}), {
-        status: 400,
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
+    return jsonError("x and y must be integers", 400);
   }
-  if (typeof placed_by !== 'string' || !placed_by) {
-    return new Response(JSON.stringify({error: 'placed_by (user id) required'}), {
-        status: 400,
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-  }
-  if (typeof color !== 'string' || !color) {
-    return new Response(JSON.stringify({error: 'color is required'}), {
-        status: 400,
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
+  if (typeof color !== "string" || !color) {
+    return jsonError("color is required", 400);
   }
   if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) {
-    return new Response(JSON.stringify({error: 'out of bounds'}), {
-        status: 400,
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
+    return jsonError("out of bounds", 400);
   }
 
-  upsertPixel.run({
-    x, y,
-    color,
-    placed_by,
-    placed_at: Date.now()
-  });
+  const placed_by = session.user.email;
 
-  console.log('placed pixel');
-  
-  
-  return new Response(JSON.stringify({ok: true}), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
+  try {
+    upsertPixel.run({
+      x,
+      y,
+      color,
+      placed_by,
+      placed_at: Date.now()
+    });
+
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (err) {
+    console.error("DB error in /api/pixels/place:", err);
+    return jsonError("internal error", 500);
+  }
 };
