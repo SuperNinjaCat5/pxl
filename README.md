@@ -1,4 +1,4 @@
-![Pixel Logo](static\images\pxl-logo.png)
+![Pixel Logo](https://raw.githubusercontent.com/username/repo/main/static/images/pxl-logo.png)
 
 # Pxl
 
