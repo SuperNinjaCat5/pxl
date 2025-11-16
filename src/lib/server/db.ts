@@ -65,6 +65,10 @@ export const getUserFromEmail = db.prepare(`
   SELECT * FROM users WHERE email = :email
 `);
 
+export const getAllUsers = db.prepare(`
+  SELECT * FROM users
+`);
+
 export const selectPixelsInRect = db.prepare(`
 SELECT x, y, color FROM pixels
 WHERE x BETWEEN @x0 AND @x1 AND y BETWEEN @y0 AND @y1

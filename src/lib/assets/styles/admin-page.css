@@ -75,3 +75,121 @@ h1 {
   text-transform: uppercase;
   padding: 0.6rem 1rem;
 }
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 0.5rem;
+}
+
+.page-content input[type="text"] {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
+  color: #ffffff;
+  background-color: #cc6600c5;
+  border: none;
+  padding: 0.6rem 1rem;
+  text-transform: uppercase;
+  cursor: text;
+  outline: none;     
+  text-shadow: none;  
+  transition: all 0.1s ease-in-out;
+  width: 300px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.page-content input[type="text"]:focus {
+  background-color: #ff9900c5;
+  box-shadow: 0 4px 0 #cc6600;
+}
+
+.page-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem auto 0 auto;
+}
+
+.page-content ul li {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
+  color: #ffffff;
+  background-color: #cc6600c5;
+  padding: 0.6rem 1rem;        
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 0.4rem;
+  border-radius: 4px;
+  border: 2px solid #ffb347;
+  box-shadow: 0 3px 0 #b35c00;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.page-content ul li:hover,
+.page-content ul li.selected {
+  background-color: #ff9900c5;
+  box-shadow: 0 2px 0 #cc6600 inset;
+  border-color: #ffcc66;
+}
+
+.page-content button {
+  all: unset;             
+  display: block;      
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  /* background: inherit; */
+  text-align: center;
+  cursor: pointer;
+  padding: 0;             
+  border-radius: inherit;
+  box-shadow: none;
+  text-transform: inherit;
+  transition: inherit;
+}
+
+.user-info p {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
+  color: #ffffff;
+  background-color: #cc6600c5;
+  padding: 0.6rem 1rem;
+  text-transform: uppercase;
+  box-shadow: 0 3px 0 #b35c00; /* softer shadow */
+  margin-bottom: 0.3rem;
+  text-align: center;
+  border-radius: 4px;
+  border: 2px solid #ffb347;
+  transition: all 0.1s ease-in-out;
+}
+
+.user-info p.selected {
+  background-color: #ff9900c5;
+  box-shadow: 0 2px 0 #cc6600 inset;
+  border-color: #ffcc66;
+}
+
+.user-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.85rem;
+  color: #ffffff;
+  background-color: #cc6600c5;
+  border: 2px solid #ffb347;
+  padding: 0.7rem 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow: 0 3px 0 #b35c00;
+  border-radius: 4px;
+  margin: 0.5rem auto;
+  width: fit-content;
+}
+
+.user-title.selected {
+  background-color: #ff9900c5;
+  box-shadow: 0 2px 0 #cc6600 inset;
+  border-color: #ffcc66;
+}

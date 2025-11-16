@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ( event ) => { // Checks if a user in t
     }
 
     existingUser = null;
-    addUser.run({ email: email, user_permission_level: 0 });
+    addUser.run({ email: email });
     // admin level is just for now, i will update the db to have bools for canvas edit, ship edit, shop edit, supa-admin
     console.log('added user');
 
