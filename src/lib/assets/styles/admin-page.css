@@ -1,0 +1,77 @@
+button {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
+  color: #ffffff;
+  background-color: #cc6600c5;
+  border: 3px dotted #ff9900;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  image-rendering: pixelated;
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 #994400;
+  transition: all 0.1s ease-in-out;
+  margin-top: 0.2rem;
+}
+
+.bitvualt-button {
+  font-size: 0.7rem;
+  color: #ffffff;
+  background-color: #cc6600c5;
+  border: 3px dotted #ff9900;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 #994400;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Press Start 2P', cursive;
+  text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9, 1px 1px #1cce75;
+  animation: flicker 2s infinite;
+}
+
+.navbar {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #cc6600c5;
+  flex-wrap: wrap;
+  padding: 0.8rem 1.2rem;
+  border-bottom: 3px dotted #ff9900;
+  box-shadow: 0 4px 0 #994400;
+}
+
+.account-navbar {
+  color: #ffffff;
+  text-shadow: none;
+  margin-right: auto;
+  margin-left: 1rem;
+  font-size: 14px;      
+  transform: scale(0.2);
+  transform-origin: left;  
+}
+
+.navbar button {
+  margin-right: 0.8rem;
+  color: #ffffff;
+  background-color: #cc6600c5;
+  border: 3px dotted #ff9900;
+  box-shadow: 0 4px 0 #994400;
+}
+
+.canvas {
+  border: 3px dotted #ff9900;
+  box-shadow: 4px 4px 0 #994400;
+  margin: 1rem;
+}
+
+h1 {
+  color: #ffffff;
+  background-color: #cc6600c5;
+  border: 3px dotted #ff9900;
+  box-shadow: 0 4px 0 #994400;
+  font-family: 'Press Start 2P', cursive;
+  text-transform: uppercase;
+  padding: 0.6rem 1rem;
+}
