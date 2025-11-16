@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals }) => {
       redirect(302,'/');
     }
     else {
-      if (!user || user.is_admin == true) {
+      if (!user || user.is_admin != true) {
         console.log('no access, sending to /home')
         redirect(302,'/home');
       }

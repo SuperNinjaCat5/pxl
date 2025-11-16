@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals }) => {
       redirect(302,'/');
     }
     else {
-      if (!user || user.is_shop_edit == true) {
+      if (!user || user.is_shop_edit != true) {
         console.log('no access, sending to /home')
         redirect(302,'/home');
       }
