@@ -38,6 +38,11 @@
   const height = 512; // total grid height
   const pixelSize = 5;
 
+  function drawPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+  }
+
   onMount(async () => {
     try {
       const res = await fetch(`/api/pixels/get`);
@@ -66,9 +71,20 @@
 
     // draw each pixel
     for (const { x, y, color } of pixels) {
-      ctx.fillStyle = color;
-      ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+      drawPixel(ctx, x, y, color);
     }
+
+    const stream = new EventSource('/api/pixels/stream');
+    stream.onmessage = e => {
+      console.log('New stream data:', e.data);
+      const msg = JSON.parse(e.data);
+      const x = msg.x;
+      const y = msg.y;
+      const color = msg.color
+      drawPixel(ctx, x, y, color);
+
+    }
+    stream.onerror = e => { console.error('Stream error:', e); stream.close(); };
   });
 
   function canvasToPixel(e: MouseEvent | PointerEvent) {

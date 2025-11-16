@@ -1,6 +1,6 @@
-// src/routes/api/pixels/place/+server.ts
 import type { RequestHandler } from "./$types";
 import { HEIGHT, WIDTH, upsertPixel } from "$lib/server/db";
+import { broadcast } from "$lib/server/pixelStream";
 
 function jsonError(message: string, status: number) {
   return new Response(JSON.stringify({ error: message }), {
@@ -45,6 +45,13 @@ export const POST: RequestHandler = async (event) => {
       color,
       placed_by,
       placed_at: Date.now()
+    });
+
+    broadcast({
+      x,
+      y,
+      color,
+      placed_by
     });
 
     return new Response(JSON.stringify({ ok: true }), {
