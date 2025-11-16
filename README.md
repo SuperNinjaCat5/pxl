@@ -1,4 +1,4 @@
-![Pixel Logo](images/pxl-logo.png)
+![Pixel Logo](static\images\pxl-logo.png)
 
 # Pxl
 
