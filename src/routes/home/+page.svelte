@@ -12,7 +12,7 @@
 <div class="page-content">
   <br>
   
-  <a href="/bitvualt"><button class="bitvualt-button">
+  <a href="/canvas"><button class="canvas-button">
   <span class="glitch-layer">Enter the Bitvault</span>
   <span class="glitch-layer">Enter the Bitvault</span>
   <span class="glitch-layer">Enter the Bitvault</span>

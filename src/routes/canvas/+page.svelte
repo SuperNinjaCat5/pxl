@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>Pixel - Bitvualt</title>
+  <title>Pixel - Canvas</title>
 </svelte:head>
 
 <script lang="ts">
