@@ -3,8 +3,6 @@
   import { page } from '$app/stores';
 
   export let editable = true;
-  
-  // const URL = '/'
 
   type Pixel = {
     x: number;
@@ -36,7 +34,7 @@
   let canvas: HTMLCanvasElement;
   const width = 512;  // total grid width
   const height = 512; // total grid height
-  const pixelSize = 5;
+  let pixelSize = 5;
 
   function drawPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
     ctx.fillStyle = color;
@@ -131,6 +129,12 @@
         console.error('network error:', err)
     }
   }
+
+  function onWheel(event: WheelEvent) {
+    console.log("Wheel event delta:", event.deltaY)
+
+    // do stuff with zoom here
+  }
 </script>
 
 <div class="page-content">
@@ -140,12 +144,15 @@
   <div>
     <canvas
       bind:this={canvas}
+      on:wheel={onWheel}
       style="image-rendering: pixelated;
             width: {width * pixelSize}px;
             height: {height * pixelSize}px;"
       class='canvas'
       on:click={placePixel}>
     </canvas> 
+
+    <input bind:value={pixelSize}>
   </div>
    {/if}
 </div>
