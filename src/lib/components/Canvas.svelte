@@ -39,6 +39,9 @@
 
   export let pixelSize: number = 5; 
 
+  // guard value used for sizing/drawing so we never use NaN/Infinity/<=0
+  $: safePixelSize = Number.isFinite(pixelSize) && pixelSize > 0 ? pixelSize : 5;
+
   function drawPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
     ctx.fillStyle = color;
     ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
@@ -67,8 +70,8 @@
 
     mounted = true;
 
-    canvas.width = (width * pixelSize);
-    canvas.height = (height * pixelSize);
+    canvas.width = (width * safePixelSize);
+    canvas.height = (height * safePixelSize);
 
     // background
     ctx.fillStyle = 'white';
@@ -120,8 +123,8 @@
   $: if (mounted && canvas) {
     const ctx = canvas.getContext('2d');
     if (ctx) {
-      canvas.width = (width * pixelSize);
-      canvas.height = (height * pixelSize);
+      canvas.width = (width * safePixelSize);
+      canvas.height = (height * safePixelSize);
       // background
       ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, width * pixelSize, height * pixelSize);
