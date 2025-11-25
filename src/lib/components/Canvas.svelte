@@ -26,23 +26,33 @@
   let header: Header | null = null;
   let pixels: Pixel[] = [];
 
-  let error: String = '';
+  let error: string = '';
 
-  let currentColor: String = 'blue';
+  let currentColor: string = 'blue';
 
   let sse: EventSource | null = null;
+
+  export let pixelSize: number = 5;
+
+  // redraw throttling / zoom clamping
+  let redrawPending = false;
+  let effectivePixelSize = pixelSize;
+  const MIN_PIXEL_SIZE = 1;
+  const MAX_PIXEL_SIZE = 32; // avoid huge canvas allocations
 
   // canvas setup
   let canvas: HTMLCanvasElement;
   const width = 512;  // total grid width
   const height = 512; // total grid height
 
-  export let pixelSize: number = 5; 
+   
 
   function drawPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
     ctx.fillStyle = color;
-    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+    ctx.fillRect(x * effectivePixelSize, y * effectivePixelSize, effectivePixelSize, effectivePixelSize);
   }
+
+  let mounted: boolean = false;
 
   onMount(async () => {
     try {
@@ -62,6 +72,8 @@
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    mounted = true;
 
     canvas.width = (width * pixelSize);
     canvas.height = (height * pixelSize);
@@ -85,6 +97,15 @@
           const x = msg.x;
           const y = msg.y;
           const color = msg.color;
+          // Update local pixels state so redraws (eg. on zoom) include this pixel
+          const found = pixels.findIndex(p => p.x === x && p.y === y);
+          if (found >= 0) {
+            pixels[found] = { x, y, color };
+            pixels = pixels; // trigger Svelte reactivity
+          } else {
+            pixels = [...pixels, { x, y, color }];
+          }
+          // draw immediately for live feedback
           drawPixel(ctx, x, y, color);
         } catch (err) {
           console.error('SSE parse/draw error', err);
@@ -102,6 +123,33 @@
     try { sse?.close(); } catch {}
     sse = null;
   });
+  function scheduleRedraw() {
+    if (!mounted || !canvas) return;
+    if (redrawPending) return;
+    redrawPending = true;
+    requestAnimationFrame(() => {
+      redrawPending = false;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // clamp pixelSize to avoid huge reallocations
+      effectivePixelSize = Math.max(MIN_PIXEL_SIZE, Math.min(MAX_PIXEL_SIZE, pixelSize));
+
+      // resize internal buffer and redraw
+      canvas.width = width * effectivePixelSize;
+      canvas.height = height * effectivePixelSize;
+
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const { x, y, color } of pixels) {
+        drawPixel(ctx, x, y, color);
+      }
+    });
+  }
+
+  // trigger redraw when mounted and when pixelSize or pixels change
+  $: if (mounted && canvas) scheduleRedraw();
 
   function canvasToPixel(e: MouseEvent | PointerEvent) {
     const rect = canvas.getBoundingClientRect();
@@ -143,6 +191,15 @@
             console.error('Unable to place pixel:', await res.text())
         }
         console.log(`placed pixel at (${x}, ${y})`)
+
+        // Optimistically update local pixels so subsequent redraws include it
+        const existing = pixels.findIndex(p => p.x === x && p.y === y);
+        if (existing >= 0) {
+          pixels[existing] = { x, y, color: currentColor };
+          pixels = pixels;
+        } else {
+          pixels = [...pixels, { x, y, color: currentColor }];
+        }
     } catch (err) {
         console.error('network error:', err)
     }
