@@ -149,21 +149,20 @@
   }
 </script>
 
-<div class="page-content">
-  {#if error}
-    <p>Error: {error}</p>
-  {:else}
-  <div>
-    <canvas
-      bind:this={canvas}
-      style="image-rendering: pixelated;
-            width: {width * pixelSize}px;
-            height: {height * pixelSize}px;"
-      class='canvas'
-      on:click={placePixel}>
-    </canvas>
 
-    <!-- <input bind:value={pixelSize}> -->
-  </div>
-   {/if}
+{#if error}
+  <p>Error: {error}</p>
+{:else}
+<div>
+  <canvas
+    bind:this={canvas}
+    style="image-rendering: pixelated;
+          width: {width * pixelSize}px;
+          height: {height * pixelSize}px;"
+    class='canvas'
+    on:click={placePixel}>
+  </canvas>
+
+  <!-- <input bind:value={pixelSize}> -->
 </div>
+  {/if}

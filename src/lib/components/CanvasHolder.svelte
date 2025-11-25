@@ -16,6 +16,6 @@
   }
 </script>
 
-<div on:wheel={onWheel}>
+<div on:wheel={onWheel} class="canvas-holder">
     <Canvas pixelSize={pixelSize}></Canvas>
 </div>
