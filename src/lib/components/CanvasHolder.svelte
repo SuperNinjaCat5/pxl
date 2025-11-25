@@ -12,7 +12,7 @@
     zoom = zoom + (.001 * -event.deltaY);
     pixelSize = pixelSizeConstant * zoom
 
-    console.log("New zoom constant:", zoom);
+    // console.log("New zoom constant:", zoom);
   }
 </script>
 
