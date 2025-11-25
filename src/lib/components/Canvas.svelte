@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { page } from '$app/stores';
 
   export let editable = true;
@@ -30,11 +30,14 @@
 
   let currentColor: String = 'blue';
 
+  let sse: EventSource | null = null;
+
   // canvas setup
   let canvas: HTMLCanvasElement;
   const width = 512;  // total grid width
   const height = 512; // total grid height
-  let pixelSize = 5;
+
+  export let pixelSize: number = 5; 
 
   function drawPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
     ctx.fillStyle = color;
@@ -72,17 +75,32 @@
       drawPixel(ctx, x, y, color);
     }
 
-    const stream = new EventSource('/api/pixels/stream');
-    stream.onmessage = e => {
-      console.log('New stream data:', e.data);
-      const msg = JSON.parse(e.data);
-      const x = msg.x;
-      const y = msg.y;
-      const color = msg.color
-      drawPixel(ctx, x, y, color);
+    // open SSE after first paint to avoid SSR/hydration issues
+    requestAnimationFrame(() => {
+      sse = new EventSource('/api/pixels/stream');
+      sse.onmessage = (e) => {
+        try {
+          console.log('New stream data:', e.data);
+          const msg = JSON.parse(e.data);
+          const x = msg.x;
+          const y = msg.y;
+          const color = msg.color;
+          drawPixel(ctx, x, y, color);
+        } catch (err) {
+          console.error('SSE parse/draw error', err);
+        }
+      };
 
-    }
-    stream.onerror = e => { console.error('Stream error:', e); stream.close(); };
+      // don't aggressively close on generic errors during load; let browser retry
+      sse.onerror = (e) => {
+        console.warn('Stream error (non-fatal):', e, 'readyState=', sse?.readyState);
+      };
+    });
+  });
+
+  onDestroy(() => {
+    try { sse?.close(); } catch {}
+    sse = null;
   });
 
   function canvasToPixel(e: MouseEvent | PointerEvent) {
@@ -129,12 +147,6 @@
         console.error('network error:', err)
     }
   }
-
-  function onWheel(event: WheelEvent) {
-    console.log("Wheel event delta:", event.deltaY)
-
-    // do stuff with zoom here
-  }
 </script>
 
 <div class="page-content">
@@ -144,15 +156,14 @@
   <div>
     <canvas
       bind:this={canvas}
-      on:wheel={onWheel}
       style="image-rendering: pixelated;
             width: {width * pixelSize}px;
             height: {height * pixelSize}px;"
       class='canvas'
       on:click={placePixel}>
-    </canvas> 
+    </canvas>
 
-    <input bind:value={pixelSize}>
+    <!-- <input bind:value={pixelSize}> -->
   </div>
    {/if}
 </div>
