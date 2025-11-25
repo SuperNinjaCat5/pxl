@@ -32,24 +32,16 @@
 
   let sse: EventSource | null = null;
 
-  export let pixelSize: number = 5;
-
-  // redraw throttling / zoom clamping
-  let redrawPending = false;
-  let effectivePixelSize = pixelSize;
-  const MIN_PIXEL_SIZE = 1;
-  const MAX_PIXEL_SIZE = 32; // avoid huge canvas allocations
-
   // canvas setup
   let canvas: HTMLCanvasElement;
   const width = 512;  // total grid width
   const height = 512; // total grid height
 
-   
+  export let pixelSize: number = 5; 
 
   function drawPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
     ctx.fillStyle = color;
-    ctx.fillRect(x * effectivePixelSize, y * effectivePixelSize, effectivePixelSize, effectivePixelSize);
+    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
   }
 
   let mounted: boolean = false;
@@ -123,33 +115,22 @@
     try { sse?.close(); } catch {}
     sse = null;
   });
-  function scheduleRedraw() {
-    if (!mounted || !canvas) return;
-    if (redrawPending) return;
-    redrawPending = true;
-    requestAnimationFrame(() => {
-      redrawPending = false;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
 
-      // clamp pixelSize to avoid huge reallocations
-      effectivePixelSize = Math.max(MIN_PIXEL_SIZE, Math.min(MAX_PIXEL_SIZE, pixelSize));
-
-      // resize internal buffer and redraw
-      canvas.width = width * effectivePixelSize;
-      canvas.height = height * effectivePixelSize;
-
+  // react to pixelSize or pixels changes and redraw when mounted
+  $: if (mounted && canvas) {
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      canvas.width = (width * pixelSize);
+      canvas.height = (height * pixelSize);
+      // background
       ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+      ctx.fillRect(0, 0, width * pixelSize, height * pixelSize);
+      // draw pixels
       for (const { x, y, color } of pixels) {
         drawPixel(ctx, x, y, color);
       }
-    });
+    }
   }
-
-  // trigger redraw when mounted and when pixelSize or pixels change
-  $: if (mounted && canvas) scheduleRedraw();
 
   function canvasToPixel(e: MouseEvent | PointerEvent) {
     const rect = canvas.getBoundingClientRect();
