@@ -2,7 +2,6 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { getUserFromEmail, addUser } from '$lib/server/db';
 
 export const GET: RequestHandler = async (event) => {
-	// Checks if a user in the DB, if not adds them
 	// this will check if the user exists and if not make an account
 	const session = await event.locals.auth();
 
@@ -11,6 +10,7 @@ export const GET: RequestHandler = async (event) => {
 	}
 
 	const email = session.user.email;
+	const slack_id = session.user.id;
 
 	console.log('got request to check user');
 
@@ -22,7 +22,7 @@ export const GET: RequestHandler = async (event) => {
 	}
 
 	existingUser = null;
-	addUser.run({ email: email });
+	addUser.run({ email: email, slack_id: slack_id });
 	// admin level is just for now, i will update the db to have bools for canvas edit, ship edit, shop edit, supa-admin
 	console.log('added user');
 
