@@ -9,6 +9,8 @@
   export let bitvualt_button = false;
   export let shop_admin_button = false;
   export let ship_admin_button = false;
+  export let admin_button = false;
+  export let canvas_mod = false;
 </script>
 
 <div class="navbar">  
@@ -20,6 +22,8 @@
     {#if bitvualt_button}<a href="/bitvualt"><button class="bitvualt-button"><span class="glitch-layer">Enter the Bitvault</span><span class="glitch-layer">Enter the Bitvault</span><span class="glitch-layer">Enter the Bitvault</span><span class="glitch-layer">Enter the Bitvault</span>Enter the Bitvault</button></a>{/if}
     {#if shop_admin_button}<AdminButton location='/admin/shop' title='Shop Edit'></AdminButton>{/if}
     {#if ship_admin_button}<AdminButton location='/admin/shop' title='Shop Edit'></AdminButton>{/if}
+    {#if canvas_mod}<AdminButton location='/admin/canvas' title='Canvas Mod'></AdminButton>{/if}
+    {#if admin_button == true}<AdminButton location='/admin' title='Admin'></AdminButton>{/if}
   </div>
 
   <div class="nav-right">

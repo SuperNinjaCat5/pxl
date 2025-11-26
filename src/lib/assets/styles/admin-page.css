@@ -1,4 +1,4 @@
-button {
+.admin-page button {
   font-family: 'Press Start 2P', cursive;
   font-size: 0.7rem;
   color: #ffffff;
@@ -13,7 +13,7 @@ button {
   margin-top: 0.2rem;
 }
 
-.bitvualt-button {
+.admin-page .bitvualt-button {
   font-size: 0.7rem;
   color: #ffffff;
   background-color: #cc6600c5;
@@ -29,7 +29,7 @@ button {
   animation: flicker 2s infinite;
 }
 
-.navbar {
+.admin-page .navbar {
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -42,7 +42,7 @@ button {
   box-shadow: 0 4px 0 #994400;
 }
 
-.account-navbar {
+.admin-page .account-navbar {
   color: #ffffff;
   text-shadow: none;
   margin-right: auto;
@@ -52,7 +52,7 @@ button {
   transform-origin: left;  
 }
 
-.navbar button {
+.admin-page .navbar button {
   margin-right: 0.8rem;
   color: #ffffff;
   background-color: #cc6600c5;
@@ -60,13 +60,13 @@ button {
   box-shadow: 0 4px 0 #994400;
 }
 
-.canvas {
+.admin-page .canvas {
   border: 3px dotted #ff9900;
   box-shadow: 4px 4px 0 #994400;
   margin: 1rem;
 }
 
-h1 {
+.admin-page h1 {
   color: #ffffff;
   background-color: #cc6600c5;
   border: 3px dotted #ff9900;
@@ -76,14 +76,14 @@ h1 {
   padding: 0.6rem 1rem;
 }
 
-.page-content {
+.admin-page .page-content {
   display: flex;
   flex-direction: column;
   align-items: center; 
   gap: 0.5rem;
 }
 
-.page-content input[type="text"] {
+.admin-page .page-content input[type="text"] {
   font-family: 'Press Start 2P', cursive;
   font-size: 0.7rem;
   color: #ffffff;
@@ -100,18 +100,18 @@ h1 {
   border-radius: 4px;
 }
 
-.page-content input[type="text"]:focus {
+.admin-page .page-content input[type="text"]:focus {
   background-color: #ff9900c5;
   box-shadow: 0 4px 0 #cc6600;
 }
 
-.page-content ul {
+.admin-page .page-content ul {
   list-style: none;
   padding: 0;
   margin: 1rem auto 0 auto;
 }
 
-.page-content ul li {
+.admin-page .page-content ul li {
   font-family: 'Press Start 2P', cursive;
   font-size: 0.7rem;
   color: #ffffff;
@@ -127,14 +127,14 @@ h1 {
   transition: all 0.1s ease-in-out;
 }
 
-.page-content ul li:hover,
-.page-content ul li.selected {
+.admin-page .page-content ul li:hover,
+.admin-page .page-content ul li.selected {
   background-color: #ff9900c5;
   box-shadow: 0 2px 0 #cc6600 inset;
   border-color: #ffcc66;
 }
 
-.page-content button {
+.admin-page .page-content button {
   all: unset;             
   display: block;      
   width: 100%;
@@ -142,7 +142,6 @@ h1 {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
-  /* background: inherit; */
   text-align: center;
   cursor: pointer;
   padding: 0;             
@@ -152,14 +151,14 @@ h1 {
   transition: inherit;
 }
 
-.user-info p {
+.admin-page .user-info p {
   font-family: 'Press Start 2P', cursive;
   font-size: 0.7rem;
   color: #ffffff;
   background-color: #cc6600c5;
   padding: 0.6rem 1rem;
   text-transform: uppercase;
-  box-shadow: 0 3px 0 #b35c00; /* softer shadow */
+  box-shadow: 0 3px 0 #b35c00;
   margin-bottom: 0.3rem;
   text-align: center;
   border-radius: 4px;
@@ -167,13 +166,13 @@ h1 {
   transition: all 0.1s ease-in-out;
 }
 
-.user-info p.selected {
+.admin-page .user-info p.selected {
   background-color: #ff9900c5;
   box-shadow: 0 2px 0 #cc6600 inset;
   border-color: #ffcc66;
 }
 
-.user-title {
+.admin-page .user-title {
   font-family: 'Press Start 2P', cursive;
   font-size: 0.85rem;
   color: #ffffff;
@@ -188,7 +187,7 @@ h1 {
   width: fit-content;
 }
 
-.user-title.selected {
+.admin-page .user-title.selected {
   background-color: #ff9900c5;
   box-shadow: 0 2px 0 #cc6600 inset;
   border-color: #ffcc66;

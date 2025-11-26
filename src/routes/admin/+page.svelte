@@ -55,10 +55,9 @@
 
 </script>
 
-<Header message="Admin Panel of Power and Cool" />
 
-<br><br>
-
+<div class="admin-page">
+<Header message="Admin Panel of Power and Cool" /><br><br>
 <div class="page-content">
   <input
   type="text"
@@ -114,4 +113,5 @@
     {/if}
   </div>
 {/if}
+</div>
 </div>
