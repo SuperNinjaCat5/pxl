@@ -6,31 +6,42 @@ export const GET: RequestHandler = async ({ request }) => {
   const stream = new ReadableStream({
     start(controller) {
       const encoder = new TextEncoder();
+      let isClosed = false;
 
       // notify client we're connected (SSE comment)
       controller.enqueue(encoder.encode(': connected\n\n'));
 
       // subscribe once for this client
       const unsubscribe = subscribe((data: PixelEvent) => {
+        // Skip if controller is already closed
+        if (isClosed) return;
+        
         const payload = JSON.stringify({ type: 'pixel_update', ...data });
         const chunk = `data: ${payload}\n\n`; // valid SSE frame
         try {
           controller.enqueue(encoder.encode(chunk));
         } catch (err) {
           console.error('SSE enqueue failed', err);
+          // Controller is closed, unsubscribe to prevent future errors
+          isClosed = true;
+          unsubscribe();
         }
       });
 
       // periodic heartbeat to keep some proxies from closing connection
       const heartbeatId = setInterval(() => {
+        if (isClosed) return;
         try {
           controller.enqueue(encoder.encode(': heartbeat\n\n'));
         } catch (e) {
-          /* ignore */
+          isClosed = true;
+          clearInterval(heartbeatId);
+          unsubscribe();
         }
       }, 15000);
 
       const onAbort = () => {
+        isClosed = true;
         unsubscribe();
         clearInterval(heartbeatId);
         try {
@@ -42,6 +53,7 @@ export const GET: RequestHandler = async ({ request }) => {
       // store cleanup for cancel()
       (controller as any)._cleanup = () => {
         request.signal.removeEventListener?.('abort', onAbort);
+        isClosed = true;
         unsubscribe();
         clearInterval(heartbeatId);
       };
