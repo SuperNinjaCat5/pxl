@@ -16,7 +16,7 @@
 
     // derive pixelSize and ensure it's a positive finite number
     const computed = pixelSizeConstant * zoom;
-    pixelSize = Number.isFinite(computed) ? Math.max(1, Math.round(computed)) : pixelSizeConstant;
+    pixelSize = Number.isFinite(computed) ? Math.max(1, Number(computed.toFixed(8))) : pixelSizeConstant;
 
     console.log("New zoom:", zoom, "pixelSize:", pixelSize);
   }
