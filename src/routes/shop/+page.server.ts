@@ -5,7 +5,6 @@ import { redirect } from '@sveltejs/kit';
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth();
 
-	// const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
 	const email = session?.user?.email ?? null;
 
 	if (!email) {

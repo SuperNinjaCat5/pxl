@@ -1,49 +1,63 @@
+// src/hooks.server.ts
 import { SvelteKitAuth } from '@auth/sveltekit';
+import type { User } from '@auth/core/types';
 import { AUTH_SECRET } from '$env/static/private';
-import Slack from '@auth/sveltekit/providers/slack';
+
+const HackClubProvider = {
+  id: 'hackclub',
+  name: 'Hack Club',
+  type: 'oauth' as const,
+  version: '2.0',
+  clientId: process.env.HACKCLUB_CLIENT_ID!,
+  clientSecret: process.env.HACKCLUB_CLIENT_SECRET!,
+  authorization: {
+    url: 'https://account.hackclub.com/oauth/authorize',
+    params: { scope: 'email name' },
+  },
+  token: 'https://account.hackclub.com/oauth/token',
+  userinfo: 'https://account.hackclub.com/api/v1/me',
+  async profile(profile: any): Promise<User> {
+    // Map Hack Club profile to Auth.js user
+    console.log('Hack Club profile callback:', profile);
+    return {
+      id: profile.identity.id,
+      name: `${profile.identity.first_name} ${profile.identity.last_name}`,
+      email: profile.identity.primary_email,
+    };
+  },
+};
 
 export const { handle } = SvelteKitAuth({
-	secret: AUTH_SECRET,
-	providers: [
-		Slack({
-			clientId: process.env.AUTH_SLACK_ID!,
-			clientSecret: process.env.AUTH_SLACK_SECRET!
-		})
-	],
-	trustHost: true,
+  secret: AUTH_SECRET,
+  providers: [HackClubProvider as any],
+  trustHost: true,
+  callbacks: {
+    async jwt({ token, account }) {
+      // Populate token on first login
+      if (account?.provider === 'hackclub' && account.access_token) {
+        try {
+          const res = await fetch('https://account.hackclub.com/api/v1/me', {
+            headers: { Authorization: `Bearer ${account.access_token}` },
+          });
+          const profile = await res.json();
+          console.log('Hack Club /me response:', profile);
 
-	callbacks: {
-		// optional: run once on sign in to pick a verified email
-		async signIn({ account }) {
-			if (account?.provider !== 'github' || !account.access_token) return true;
-
-			const resp = await fetch('https://api.github.com/user/emails', {
-				headers: { Authorization: `Bearer ${account.access_token}` }
-			});
-			const emails: { email: string; primary: boolean; verified: boolean }[] = await resp.json();
-
-			const primaryVerified =
-				emails.find((e) => e.primary && e.verified) ?? emails.find((e) => e.verified) ?? null;
-
-			// require a verified email (optional but recommended)
-			if (!primaryVerified) return false;
-
-			// stash it on the account temporarily so we can copy to the token
-			// @ts-ignore - not in the type, but available here
-			account.__chosenEmail = primaryVerified.email;
-			return true;
-		},
-
-		async jwt({ token, account }) {
-			// on first login, copy chosen email onto the token
-			// @ts-ignore - custom field from signIn above
-			if (account?.__chosenEmail) token.email = account.__chosenEmail;
-			return token;
-		},
-
-		async session({ session, token }) {
-			if (token?.email) session.user.email = token.email as string;
-			return session;
-		}
-	}
+          token.email = profile.identity.primary_email;
+          token.name = `${profile.identity.first_name} ${profile.identity.last_name}`;
+          token.id = profile.identity.id;
+        } catch (err) {
+          console.error('Error fetching Hack Club profile:', err);
+        }
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Ensure session.user is always populated
+      session.user = session.user ?? {};
+      session.user.email = token.email as string;
+      session.user.name = token.name as string;
+      session.user.id = token.id as string;
+      return session;
+    },
+  },
 });
