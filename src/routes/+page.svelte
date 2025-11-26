@@ -2,7 +2,6 @@
 	import { signIn, signOut } from '@auth/sveltekit/client';
 	import pxlTitle from '$lib/assets/pxl-title.png';
 	import '$lib/assets/styles/home.css';
-	import { redirect } from '@sveltejs/kit';
 </script>
 
 <svelte:head>
