@@ -9,7 +9,7 @@ console.log('Using DB at', dbPath);
 // make sure the directory exists
 const dir = path.dirname(dbPath);
 if (dir && dir !== '.' && !fs.existsSync(dir)) {
-	fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(dir, { recursive: true });
 }
 
 const db = new Database(dbPath);
