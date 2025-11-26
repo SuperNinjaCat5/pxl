@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400&display=swap');
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background: #ffffff;
@@ -54,13 +55,27 @@ button {
   position: relative;
   overflow: hidden;
   font-family: 'Press Start 2P', cursive;
-  text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9, 1px 1px #1cce75;
+  text-shadow:
+    2px 0 #ff00c1,
+    -2px 0 #00fff9,
+    1px 1px #1cce75;
   animation: flicker 2s infinite;
 }
 
 @keyframes flicker {
-  0%, 19%, 21%, 50%, 55%, 100% { opacity: 1; }
-  20%, 50%, 54% { opacity: 0.6; }
+  0%,
+  19%,
+  21%,
+  50%,
+  55%,
+  100% {
+    opacity: 1;
+  }
+  20%,
+  50%,
+  54% {
+    opacity: 0.6;
+  }
 }
 
 .glitch-layer {
@@ -69,7 +84,7 @@ button {
   left: 0;
   width: 100%;
   opacity: 0.8;
-  pointer-events: none; 
+  pointer-events: none;
 }
 
 /* .glitch-layer:nth-child(1) { animation: glitchTop 2s infinite; color: #ff00c1; }
@@ -77,35 +92,98 @@ button {
 .glitch-layer:nth-child(3) { animation: glitchExtra 2s infinite; color: #1cce75; }
 .glitch-layer:nth-child(4) { animation: glitchTop 2s infinite; color: #fffa00; } */
 
-.glitch-layer:nth-child(1) { animation: glitchTop 2s infinite; color: #2ae6bd; }
-.glitch-layer:nth-child(2) { animation: glitchBottom 2s infinite; color: #115352; }
-.glitch-layer:nth-child(3) { animation: glitchExtra 2s infinite; color: #2802ff; }
-.glitch-layer:nth-child(4) { animation: glitchTop 2s infinite; color: #356877; }
+.glitch-layer:nth-child(1) {
+  animation: glitchTop 2s infinite;
+  color: #2ae6bd;
+}
+.glitch-layer:nth-child(2) {
+  animation: glitchBottom 2s infinite;
+  color: #115352;
+}
+.glitch-layer:nth-child(3) {
+  animation: glitchExtra 2s infinite;
+  color: #2802ff;
+}
+.glitch-layer:nth-child(4) {
+  animation: glitchTop 2s infinite;
+  color: #356877;
+}
 
 @keyframes glitchTop {
-  0%   { clip: rect(0px, 9999px, 30px, 0); transform: translate(-3px, 4px); }
-  20%  { clip: rect(5px, 9999px, 35px, 0); transform: translate(4px, 8px); }
-  40%  { clip: rect(10px, 9999px, 40px, 0); transform: translate(-5px, 6px); }
-  60%  { clip: rect(0px, 9999px, 30px, 0); transform: translate(3px, 7px); }
-  80%  { clip: rect(5px, 9999px, 35px, 0); transform: translate(-4px, 5px); }
-  100% { clip: rect(0px, 9999px, 30px, 0); transform: translate(0, 6px); }
+  0% {
+    clip: rect(0px, 9999px, 30px, 0);
+    transform: translate(-3px, 4px);
+  }
+  20% {
+    clip: rect(5px, 9999px, 35px, 0);
+    transform: translate(4px, 8px);
+  }
+  40% {
+    clip: rect(10px, 9999px, 40px, 0);
+    transform: translate(-5px, 6px);
+  }
+  60% {
+    clip: rect(0px, 9999px, 30px, 0);
+    transform: translate(3px, 7px);
+  }
+  80% {
+    clip: rect(5px, 9999px, 35px, 0);
+    transform: translate(-4px, 5px);
+  }
+  100% {
+    clip: rect(0px, 9999px, 30px, 0);
+    transform: translate(0, 6px);
+  }
 }
 
 @keyframes glitchBottom {
-  0%   { clip: rect(0px, 9999px, 30px, 0); transform: translate(-2px, 5px); }
-  20%  { clip: rect(5px, 9999px, 35px, 0); transform: translate(2px, 7px); }
-  40%  { clip: rect(10px, 9999px, 40px, 0); transform: translate(-1px, 6px); }
-  60%  { clip: rect(0px, 9999px, 30px, 0); transform: translate(1px, 8px); }
-  80%  { clip: rect(5px, 9999px, 35px, 0); transform: translate(-2px, 5px); }
-  100% { clip: rect(0px, 9999px, 30px, 0); transform: translate(0, 6px); }
+  0% {
+    clip: rect(0px, 9999px, 30px, 0);
+    transform: translate(-2px, 5px);
+  }
+  20% {
+    clip: rect(5px, 9999px, 35px, 0);
+    transform: translate(2px, 7px);
+  }
+  40% {
+    clip: rect(10px, 9999px, 40px, 0);
+    transform: translate(-1px, 6px);
+  }
+  60% {
+    clip: rect(0px, 9999px, 30px, 0);
+    transform: translate(1px, 8px);
+  }
+  80% {
+    clip: rect(5px, 9999px, 35px, 0);
+    transform: translate(-2px, 5px);
+  }
+  100% {
+    clip: rect(0px, 9999px, 30px, 0);
+    transform: translate(0, 6px);
+  }
 }
 
 @keyframes glitchExtra {
-  0%   { clip: rect(5px, 9999px, 10px, 0); transform: translate(2px, 5px); }
-  25%  { clip: rect(8px, 9999px, 13px, 0); transform: translate(-3px, 7px); }
-  50%  { clip: rect(10px, 9999px, 15px, 0); transform: translate(1px, 6px); }
-  75%  { clip: rect(7px, 9999px, 12px, 0); transform: translate(-2px, 8px); }
-  100% { clip: rect(5px, 9999px, 10px, 0); transform: translate(0, 6px); }
+  0% {
+    clip: rect(5px, 9999px, 10px, 0);
+    transform: translate(2px, 5px);
+  }
+  25% {
+    clip: rect(8px, 9999px, 13px, 0);
+    transform: translate(-3px, 7px);
+  }
+  50% {
+    clip: rect(10px, 9999px, 15px, 0);
+    transform: translate(1px, 6px);
+  }
+  75% {
+    clip: rect(7px, 9999px, 12px, 0);
+    transform: translate(-2px, 8px);
+  }
+  100% {
+    clip: rect(5px, 9999px, 10px, 0);
+    transform: translate(0, 6px);
+  }
 }
 
 .navbar {
@@ -114,13 +192,12 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #c7f8ff; 
+  background: #c7f8ff;
   flex-wrap: wrap;
   padding: 0.8rem 1.2rem;
   border-bottom: 3px solid #0077ff;
   box-shadow: 0 4px 0 #004c99;
 }
-
 
 .canvas {
   margin: 0rem;
@@ -157,9 +234,9 @@ button {
   text-shadow: 1px 1px #004c99;
   margin-right: auto;
   margin-left: 1rem;
-  font-size: 14px;      
+  font-size: 14px;
   transform: scale(0.2);
-  transform-origin: left;  
+  transform-origin: left;
 }
 
 @media (max-width: 800px) {

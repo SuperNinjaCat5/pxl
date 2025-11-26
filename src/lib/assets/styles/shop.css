@@ -1,24 +1,24 @@
 .shop-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
 }
 
 .item {
   display: inline-block;
-  width: calc(45% - 1rem); 
+  width: calc(45% - 1rem);
   padding: 1rem;
-  background-color: #0077ffc5; 
-  border: 3px solid #0078ff;  
+  background-color: #0077ffc5;
+  border: 3px solid #0078ff;
   /* border-radius: 0.1rem;         */
   text-align: center;
   margin: 0.5rem;
   font-family: 'Press Start 2P', cursive;
-  color: white;            
-  box-shadow: none;        
+  color: white;
+  box-shadow: none;
 }
 
 .item-image {

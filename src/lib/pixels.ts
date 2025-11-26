@@ -1,1 +1,1 @@
-export const pixels = new Map<string, {color: string, link?: string, user: string}>();
+export const pixels = new Map<string, { color: string; link?: string; user: string }>();

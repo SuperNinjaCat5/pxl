@@ -17,13 +17,10 @@
     generated_at: number;
   };
 
-  type PixelResponse = [
-    Header,
-    Pixel[]
-  ];
+  type PixelResponse = [Header, Pixel[]];
 
   // let pixels = [{ x: 1, y: 1, color: 'red' },{ x: 3, y: 1, color: 'blue' },{ x: 100, y: 1, color: 'red' },{ x: 8, y: 6, color: 'blue' }];
-  
+
   let header: Header | null = null;
   let pixels: Pixel[] = [];
 
@@ -43,10 +40,10 @@
 
   // canvas setup
   let canvas: HTMLCanvasElement;
-  const width = 512;  // total grid width
+  const width = 512; // total grid width
   const height = 512; // total grid height
 
-  export let pixelSize: number = 5; 
+  export let pixelSize: number = 5;
 
   // guard value used for sizing/drawing so we never use NaN/Infinity/<=0
   $: safePixelSize = Number.isFinite(pixelSize) && pixelSize > 0 ? pixelSize : 5;
@@ -89,7 +86,6 @@
     }
   }
 
-
   onMount(async () => {
     try {
       const res = await fetch(`/api/pixels/get`);
@@ -102,7 +98,7 @@
       console.log('header:', header);
       console.log('pixels:', pixels);
     } catch (err) {
-      error = String(err)
+      error = String(err);
       console.error('Fetch failed:', err);
     }
 
@@ -111,8 +107,8 @@
 
     mounted = true;
 
-    canvas.width = (width * safePixelSize);
-    canvas.height = (height * safePixelSize);
+    canvas.width = width * safePixelSize;
+    canvas.height = height * safePixelSize;
 
     // background
     ctx.fillStyle = 'white';
@@ -130,7 +126,7 @@
         const y = msg.y;
         const color = msg.color;
         // Update local pixels state so redraws (eg. on zoom) include this pixel
-        const found = pixels.findIndex(p => p.x === x && p.y === y);
+        const found = pixels.findIndex((p) => p.x === x && p.y === y);
         if (found >= 0) {
           pixels[found] = { x, y, color };
           pixels = pixels; // trigger Svelte reactivity
@@ -151,7 +147,9 @@
   });
 
   onDestroy(() => {
-    try { sse?.close(); } catch {}
+    try {
+      sse?.close();
+    } catch {}
     sse = null;
   });
 
@@ -175,19 +173,22 @@
     let x = Math.floor((e.clientX - rect.left) * scaleX);
     let y = Math.floor((e.clientY - rect.top) * scaleY);
 
-    x = Math.round(x/safePixelSize);
-    y = Math.round(y/safePixelSize);
+    x = Math.round(x / safePixelSize);
+    y = Math.round(y / safePixelSize);
 
     console.log(`Found x and y: (${x}, ${y})`);
-    
-    if (editable == false) {console.log(`In read-only canvas mode, so not sending request to place pixel`)}
+
+    if (editable == false) {
+      console.log(`In read-only canvas mode, so not sending request to place pixel`);
+    }
 
     return { x, y };
   }
 
   function onMouseDown(event: MouseEvent | PointerEvent) {
-    console.log('Ran onMouseDown')
-    if (event.button === 2) { // 0 is left, 1 is center, 2 is right
+    console.log('Ran onMouseDown');
+    if (event.button === 2) {
+      // 0 is left, 1 is center, 2 is right
       isPanning = true;
       startX = event.clientX;
       startY = event.clientY;
@@ -210,7 +211,7 @@
       startX = event.clientX;
       startY = event.clientY;
 
-      console.log(`offsetX: ${offsetX}, offsetY: ${offsetY}`)
+      console.log(`offsetX: ${offsetX}, offsetY: ${offsetY}`);
       scheduleRedraw();
     }
   }
@@ -221,57 +222,63 @@
 
   async function placePixel(e: MouseEvent | PointerEvent) {
     const { x, y } = canvasToPixel(e);
-    
+
     if (x < 0 || y < 0 || x >= width || y >= height) return;
-    
-    if (editable == false) {return;} // Stop user from placing if the canvas is not editable
+
+    if (editable == false) {
+      return;
+    } // Stop user from placing if the canvas is not editable
 
     // send request to api to place pixel
 
     try {
-        const res = await fetch(`/api/pixels/place`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json' },
-          body: JSON.stringify({ x, y, color: currentColor, placed_by: $page.data?.session?.user?.email ?? 'null'})
-        });
+      const res = await fetch(`/api/pixels/place`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          x,
+          y,
+          color: currentColor,
+          placed_by: $page.data?.session?.user?.email ?? 'null'
+        })
+      });
 
-        if (!res.ok) {
-            console.error('Unable to place pixel:', await res.text())
-        }
-        console.log(`placed pixel at (${x}, ${y})`)
+      if (!res.ok) {
+        console.error('Unable to place pixel:', await res.text());
+      }
+      console.log(`placed pixel at (${x}, ${y})`);
 
-        // Optimistically update local pixels so subsequent redraws include it
-        const existing = pixels.findIndex(p => p.x === x && p.y === y);
-        if (existing >= 0) {
-          pixels[existing] = { x, y, color: currentColor };
-          pixels = pixels;
-        } else {
-          pixels = [...pixels, { x, y, color: currentColor }];
-        }
+      // Optimistically update local pixels so subsequent redraws include it
+      const existing = pixels.findIndex((p) => p.x === x && p.y === y);
+      if (existing >= 0) {
+        pixels[existing] = { x, y, color: currentColor };
+        pixels = pixels;
+      } else {
+        pixels = [...pixels, { x, y, color: currentColor }];
+      }
     } catch (err) {
-        console.error('network error:', err)
+      console.error('network error:', err);
     }
   }
 </script>
 
-
 {#if error}
   <p>Error: {error}</p>
 {:else}
-<div>
-  <canvas
-    bind:this={canvas}
-    on:mousedown={onMouseDown}
-    on:mousemove={onMouseMove}
-    on:mouseup={onMouseUp}
-        style="image-rendering: pixelated;
+  <div>
+    <canvas
+      bind:this={canvas}
+      on:mousedown={onMouseDown}
+      on:mousemove={onMouseMove}
+      on:mouseup={onMouseUp}
+      style="image-rendering: pixelated;
           width: {width * safePixelSize}px;
           height: {height * safePixelSize}px;"
-    class='canvas'>
-  </canvas>
+      class="canvas">
+    </canvas>
 
-  <!-- on:click={placePixel} -->
+    <!-- on:click={placePixel} -->
 
-  <!-- <input bind:value={pixelSize}> -->
-</div>
-  {/if}
+    <!-- <input bind:value={pixelSize}> -->
+  </div>
+{/if}
