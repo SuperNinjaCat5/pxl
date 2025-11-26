@@ -1,10 +1,9 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
-	import '$lib/assets/styles/main.css'
-	
+	import '$lib/assets/styles/main.css';
+
 	// Imports:
 	import pxlTitle from '$lib/assets/pxl-title.png';
-
 
 	let { children } = $props();
 </script>
