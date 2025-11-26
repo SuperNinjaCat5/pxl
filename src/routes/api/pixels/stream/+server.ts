@@ -1,6 +1,6 @@
-import type { RequestHandler } from '@sveltejs/kit';
-import { subscribe } from '$lib/server/pixelStream';
-import type { PixelEvent } from '$lib/server/pixelStream';
+import type { RequestHandler } from "@sveltejs/kit";
+import { subscribe } from "$lib/server/pixelStream";
+import type { PixelEvent } from "$lib/server/pixelStream";
 
 export const GET: RequestHandler = async ({ request }) => {
   const stream = new ReadableStream({
@@ -31,9 +31,9 @@ export const GET: RequestHandler = async ({ request }) => {
       // periodic heartbeat to keep some proxies from closing connection
       const heartbeatId = setInterval(() => {
         if (isClosed) return;
-        try {
-          controller.enqueue(encoder.encode(': heartbeat\n\n'));
-        } catch (e) {
+        try { controller.enqueue(encoder.encode(': heartbeat\n\n')); }
+        catch (e) { 
+          // Controller is closed, mark it and clean up
           isClosed = true;
           clearInterval(heartbeatId);
           unsubscribe();
@@ -44,9 +44,7 @@ export const GET: RequestHandler = async ({ request }) => {
         isClosed = true;
         unsubscribe();
         clearInterval(heartbeatId);
-        try {
-          controller.close();
-        } catch {}
+        try { controller.close(); } catch {}
       };
       request.signal.addEventListener?.('abort', onAbort);
 
@@ -68,10 +66,10 @@ export const GET: RequestHandler = async ({ request }) => {
   return new Response(stream, {
     status: 200,
     headers: {
-      'Content-Type': 'text/event-stream; charset=utf-8',
-      'Cache-Control': 'no-cache, no-transform',
-      Connection: 'keep-alive',
-      'X-Accel-Buffering': 'no'
+      "Content-Type": "text/event-stream; charset=utf-8",
+      "Cache-Control": "no-cache, no-transform",
+      "Connection": "keep-alive",
+      "X-Accel-Buffering": "no"
     }
   });
 };
