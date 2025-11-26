@@ -1,14 +1,14 @@
-<svelte:head>
-  <title>Pixel - Canvas</title>
-</svelte:head>
-
 <script lang="ts">
-  import Header from '$lib/components/Header.svelte';
-  import CanvasHolder from '$lib/components/CanvasHolder.svelte';
+	import Header from '$lib/components/Header.svelte';
+	import CanvasHolder from '$lib/components/CanvasHolder.svelte';
 </script>
+
+<svelte:head>
+	<title>Pixel - Canvas</title>
+</svelte:head>
 
 <Header home_button={true} shop_button={true} is_canvas={true}></Header>
 
 <div class="page-content">
-  <CanvasHolder></CanvasHolder>
+	<CanvasHolder></CanvasHolder>
 </div>
