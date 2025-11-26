@@ -274,8 +274,7 @@
       style="image-rendering: pixelated;
           width: {width * safePixelSize}px;
           height: {height * safePixelSize}px;"
-      class="canvas"
-    >
+      class="canvas">
     </canvas>
 
     <!-- on:click={placePixel} -->

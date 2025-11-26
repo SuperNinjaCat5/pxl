@@ -19,8 +19,7 @@
       <span class="glitch-layer">Enter the Bitvault</span>
       <span class="glitch-layer">Enter the Bitvault</span>
       Enter the Bitvault
-    </button></a
-  >
+    </button></a>
 
   <a href="/shop"><button>Shop</button></a>
 
