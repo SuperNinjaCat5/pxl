@@ -58,7 +58,7 @@ const products = [
   }];
 </script>
 
-<Header home_button={true} bitvualt_button={true} shop_admin_button={user_is_admin}></Header>
+<Header home_button={true} canvas_button={true} shop_admin_button={user_is_admin}></Header>
 
 
 <div class="shop-wrapper">

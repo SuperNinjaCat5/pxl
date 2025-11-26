@@ -9,6 +9,6 @@
   const user_is_admin = data.admin_viewer; // only for displaying buttons and stuff
 </script>
 
-<Header home_button={true} bitvualt_button={true} canvas_mod={user_is_admin}></Header>
+<Header home_button={true} canvas_button={true} canvas_mod={user_is_admin}></Header>
 
 <Canvas></Canvas>

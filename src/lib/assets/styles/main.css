@@ -10,6 +10,9 @@ html, body {
 .page-content {
   padding-left: 1rem;
   padding-right: 1rem;
+  width: 100vw;
+  /* height: 90vh; */
+  /* background-color: red; */
 }
 
 :root {
@@ -39,7 +42,7 @@ button {
   margin-top: 0.2rem;
 }
 
-.bitvualt-button {
+.canvas-button {
   font-size: 0.7rem;
   color: white;
   background-color: #0bb0da;
@@ -118,10 +121,23 @@ button {
   box-shadow: 0 4px 0 #004c99;
 }
 
+
 .canvas {
+  margin: 0rem;
+}
+
+.canvas-holder {
   border: 3px solid #0077ff;
   box-shadow: 4px 4px 0 #004c99;
-  margin: 1rem;
+  /* background-color: green; */
+  width: 90vw;
+  /* make the canvas sit 5vh below the header but not increase page height
+     (page-content already reserves space for the 10vh header) */
+  margin-top: 5vh;
+  /* reserve 5vh top gap and 5vh bottom gap inside .page-content */
+  height: 80vh;
+  margin-left: 5vw;
+  overflow: hidden;
 }
 
 .navbar a {

@@ -17,7 +17,7 @@ export const GET: RequestHandler = async ({ url }) => {
         generated_at: Date.now()
     };
 
-    console.log('returning', header, rows);
+    //console.log('returning', header, rows);
 
     return new Response(JSON.stringify([header, rows]));
 }
