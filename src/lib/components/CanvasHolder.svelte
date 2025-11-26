@@ -16,14 +16,12 @@
 
     // derive pixelSize and ensure it's a positive finite number
     const computed = pixelSizeConstant * zoom;
-    pixelSize = Number.isFinite(computed)
-      ? Math.max(1, Number(computed.toFixed(8)))
-      : pixelSizeConstant;
+    pixelSize = Number.isFinite(computed) ? Math.max(1, Number(computed.toFixed(8))) : pixelSizeConstant;
 
-    console.log('New zoom:', zoom, 'pixelSize:', pixelSize);
+    console.log("New zoom:", zoom, "pixelSize:", pixelSize);
   }
 </script>
 
 <div on:wheel={onWheel} class="canvas-holder">
-  <Canvas {pixelSize}></Canvas>
+    <Canvas pixelSize={pixelSize}></Canvas>
 </div>
