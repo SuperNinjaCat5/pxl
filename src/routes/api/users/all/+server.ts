@@ -1,28 +1,29 @@
-import type { RequestHandler } from "@sveltejs/kit";
-import { getUserFromEmail, addUser, getAllUsers } from "$lib/server/db";
+import type { RequestHandler } from '@sveltejs/kit';
+import { getUserFromEmail, addUser, getAllUsers } from '$lib/server/db';
 
-export const GET: RequestHandler = async ( event ) => { // Checks if a user in the DB, if not adds them
-    // this will check if the user exists and if not make an account
-    const session = await event.locals.auth();
-    
-    // Require Login
-    if (!session || !session.user?.email ) {
-        return new Response("Unauthorized", { status: 401 });
-    }
+export const GET: RequestHandler = async (event) => {
+	// Checks if a user in the DB, if not adds them
+	// this will check if the user exists and if not make an account
+	const session = await event.locals.auth();
 
-    // Require Admin
-    const email = session.user.email
-    var user = getUserFromEmail.get({ email });
+	// Require Login
+	if (!session || !session.user?.email) {
+		return new Response('Unauthorized', { status: 401 });
+	}
 
-    if ( user.is_admin != true ) {
-        return new Response("Unauthorized", { status: 401 });
-    }
+	// Require Admin
+	const email = session.user.email;
+	var user = getUserFromEmail.get({ email });
 
-    console.log('got request for all users');
+	if (user.is_admin != true) {
+		return new Response('Unauthorized', { status: 401 });
+	}
 
-    const users = getAllUsers.all();
-    
-    console.log('got all users');
+	console.log('got request for all users');
 
-    return new Response(JSON.stringify(users))
-}
+	const users = getAllUsers.all();
+
+	console.log('got all users');
+
+	return new Response(JSON.stringify(users));
+};

@@ -1,22 +1,22 @@
 import type { PageServerLoad } from './$types';
-import { getUserFromEmail } from "$lib/server/db";
+import { getUserFromEmail } from '$lib/server/db';
 import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ locals }) => {
-  const session = await locals.auth();
+	const session = await locals.auth();
 
-  // const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
-  const email = session?.user?.email ?? null;
+	// const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
+	const email = session?.user?.email ?? null;
 
-  if (!email) {
-    redirect(302,'/');
-  }
-  
-  const user = getUserFromEmail.get({ email });
+	if (!email) {
+		redirect(302, '/');
+	}
 
-  const admin_viewer = user?.is_canvas_mod ?? false;
+	const user = getUserFromEmail.get({ email });
 
-    return {
-      admin_viewer
-    }
-  };
+	const admin_viewer = user?.is_canvas_mod ?? false;
+
+	return {
+		admin_viewer
+	};
+};

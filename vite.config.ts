@@ -5,6 +5,6 @@ import basicSsl from '@vitejs/plugin-basic-ssl';
 export default defineConfig({
 	plugins: [sveltekit(), basicSsl()],
 	server: {
-		allowedHosts: [".ngrok-free.app"],
+		allowedHosts: ['.ngrok-free.app']
 	}
 });
