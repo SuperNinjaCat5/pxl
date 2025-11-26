@@ -5,19 +5,26 @@ export type PixelEvent = {
     placed_by: string;
 };
 
-const subscribers: Array<(e: PixelEvent) => void> = [];
+const subscribers: Set<(e: PixelEvent) => void> = new Set();
 
 export function subscribe(fn: (e: PixelEvent) => void) {
-  subscribers.push(fn);
+  subscribers.add(fn);
 
   return () => {
-    const idx = subscribers.indexOf(fn);
-    if (idx !== -1) subscribers.splice(idx, 1);
-  }
+    subscribers.delete(fn);
+  };
 }
 
 export function broadcast(msg: PixelEvent) {
-    for (const fn of subscribers) {
-        fn(msg);
+  // iterate over a shallow copy so removals during iteration are safe
+  for (const fn of Array.from(subscribers)) {
+    try {
+      fn(msg);
+    } catch (err: any) {
+      // If a subscriber throws because its stream/controller is closed,
+      // remove it so future broadcasts won't call it again.
+      console.warn('subscriber threw during broadcast — removing subscriber', err && err.message ? err.message : err);
+      try { subscribers.delete(fn); } catch (_) {}
     }
+  }
 }

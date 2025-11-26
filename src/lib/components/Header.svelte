@@ -9,9 +9,10 @@
   export let canvas_button = false;
   export let shop_admin_button = false;
   export let ship_admin_button = false;
+  export let is_canvas = false;
 </script>
 
-<div class="navbar">  
+<div class="navbar" style={is_canvas ? 'height: 10vh' : undefined}>  
   <div class="nav-left">
     {#if message}<h1>{message}</h1>{/if} <!--Custom Message-->
     {#if welcome_message}<h1>Welcome to Pxl</h1>{/if}
