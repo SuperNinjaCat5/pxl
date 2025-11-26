@@ -2,16 +2,17 @@
   <title>Pixel - Shop</title>
 </svelte:head>
 
-<script>
+<script lang="ts">
   import ShopItem from '$lib/components/ShopItem.svelte';
   import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
+  // import { goto } from '$app/navigation';
+  // import { onMount } from 'svelte';
   import '$lib/assets/styles/shop.css'
   import Header from '$lib/components/Header.svelte';
 
-  let user_is_admin = true // For now later use auth
-
+  export let data: { admin_viewer: boolean };
+  const user_is_admin = data.admin_viewer; // only for displaying buttons and stuff
+  
 const products = [
   {
     name: 'Retro Pixel Hat',

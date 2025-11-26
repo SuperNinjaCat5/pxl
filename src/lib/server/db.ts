@@ -34,7 +34,10 @@ CREATE INDEX IF NOT EXISTS idx_pixels_placed_at ON pixels(placed_at);
 CREATE TABLE IF NOT EXISTS users (
   user_id INTEGER PRIMARY KEY AUTOINCREMENT,
   email        TEXT NOT NULL,
-  admin_level  INTEGER NOT NULL
+  is_ship_edit BOOLEAN NOT NULL DEFAULT 0,
+  is_shop_edit BOOLEAN NOT NULL DEFAULT 0,
+  is_canvas_mod BOOLEAN NOT NULL DEFAULT 0,
+  is_admin BOOLEAN NOT NULL DEFAULT 0
 );
 
 CREATE INDEX IF NOT EXISTS idx_pixels_placed_at ON pixels(placed_at);
@@ -50,8 +53,8 @@ ON CONFLICT(x, y) DO UPDATE SET
 `);
 
 export const addUser = db.prepare(`
-  INSERT INTO users (email, admin_level)
-  VALUES (:email, :user_permission_level)
+  INSERT INTO users (email)
+  VALUES (:email)
 `);
 
 // export const getUserFromKey = db.prepare(`
@@ -60,6 +63,10 @@ export const addUser = db.prepare(`
 
 export const getUserFromEmail = db.prepare(`
   SELECT * FROM users WHERE email = :email
+`);
+
+export const getAllUsers = db.prepare(`
+  SELECT * FROM users
 `);
 
 export const selectPixelsInRect = db.prepare(`
