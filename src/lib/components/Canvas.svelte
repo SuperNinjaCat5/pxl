@@ -176,6 +176,9 @@
 		x = Math.round(x / safePixelSize);
 		y = Math.round(y / safePixelSize);
 
+		x = x - offsetX / safePixelSize;
+		y = y - offsetY / safePixelSize;
+
 		console.log(`Found x and y: (${x}, ${y})`);
 
 		if (editable == false) {
@@ -271,6 +274,7 @@
 			on:mousedown={onMouseDown}
 			on:mousemove={onMouseMove}
 			on:mouseup={onMouseUp}
+			on:contextmenu|preventDefault
 			style="image-rendering: pixelated;
           width: {width * safePixelSize}px;
           height: {height * safePixelSize}px;"
