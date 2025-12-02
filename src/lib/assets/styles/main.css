@@ -206,15 +206,12 @@ button {
 .canvas-holder {
 	border: 3px solid #0077ff;
 	box-shadow: 4px 4px 0 #004c99;
-	/* background-color: green; */
 	width: 90vw;
-	/* make the canvas sit 5vh below the header but not increase page height
-     (page-content already reserves space for the 10vh header) */
 	margin-top: 5vh;
-	/* reserve 5vh top gap and 5vh bottom gap inside .page-content */
 	height: 80vh;
 	margin-left: 5vw;
 	overflow: hidden;
+	background-color: gray;
 }
 
 .navbar a {

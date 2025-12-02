@@ -276,8 +276,9 @@
 			on:mouseup={onMouseUp}
 			on:contextmenu|preventDefault
 			style="image-rendering: pixelated;
-          width: {width * safePixelSize}px;
-          height: {height * safePixelSize}px;"
+          	width: {width * safePixelSize}px;
+          	height: {height * safePixelSize}px;
+			transform: translate({offsetX}px, {offsetY}px);"
 			class="canvas">
 		</canvas>
 
