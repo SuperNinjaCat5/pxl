@@ -274,6 +274,7 @@
 			on:mousedown={onMouseDown}
 			on:mousemove={onMouseMove}
 			on:mouseup={onMouseUp}
+			on:contextmenu|preventDefault
 			style="image-rendering: pixelated;
           width: {width * safePixelSize}px;
           height: {height * safePixelSize}px;"
