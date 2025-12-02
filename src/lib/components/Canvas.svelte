@@ -173,11 +173,8 @@
 		let x = Math.floor((e.clientX - rect.left) * scaleX);
 		let y = Math.floor((e.clientY - rect.top) * scaleY);
 
-		x = Math.round(x / safePixelSize);
-		y = Math.round(y / safePixelSize);
-
-		x = x - offsetX / safePixelSize;
-		y = y - offsetY / safePixelSize;
+		x = Math.round((x - offsetX) / safePixelSize);
+		y = Math.round((y - offsetY) / safePixelSize);
 
 		console.log(`Found x and y: (${x}, ${y})`);
 
