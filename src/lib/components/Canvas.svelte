@@ -176,6 +176,9 @@
 		x = Math.round(x / safePixelSize);
 		y = Math.round(y / safePixelSize);
 
+		x = x + offsetX;
+		y = y + offsetY;
+
 		console.log(`Found x and y: (${x}, ${y})`);
 
 		if (editable == false) {
