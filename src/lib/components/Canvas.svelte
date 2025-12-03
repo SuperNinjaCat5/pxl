@@ -80,12 +80,11 @@
 		ctx.fillStyle = 'white';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-		// compute visible grid bounds from offset and pixel size
-		// offsetX/Y are in CSS px; safePixelSize is CSS px per grid cell
-		const viewLeft = Math.floor(-offsetX / safePixelSize);
-		const viewTop = Math.floor(-offsetY / safePixelSize);
-		const viewRight = Math.ceil((canvas.width - offsetX) / safePixelSize);
-		const viewBottom = Math.ceil((canvas.height - offsetY) / safePixelSize);
+		// compute visible grid bounds from canvas dimensions and pixel size
+		const viewLeft = 0;
+		const viewTop = 0;
+		const viewRight = Math.ceil(canvas.width / safePixelSize);
+		const viewBottom = Math.ceil(canvas.height / safePixelSize);
 
 		// clamp to world bounds
 		const minX = Math.max(0, viewLeft);
