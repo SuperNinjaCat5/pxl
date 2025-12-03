@@ -50,8 +50,8 @@
 
 	function drawPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
 		const psz = safePixelSize;
-		const px = Math.round(x * psz + offsetX);
-		const py = Math.round(y * psz + offsetY);
+		const px = Math.round(x * psz);
+		const py = Math.round(y * psz);
 		ctx.fillStyle = color;
 		ctx.fillRect(px, py, Math.max(1, psz), Math.max(1, psz));
 	}
@@ -80,8 +80,22 @@
 		ctx.fillStyle = 'white';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-		// draw all pixels
+		// compute visible grid bounds from offset and pixel size
+		// offsetX/Y are in CSS px; safePixelSize is CSS px per grid cell
+		const viewLeft = Math.floor(-offsetX / safePixelSize);
+		const viewTop = Math.floor(-offsetY / safePixelSize);
+		const viewRight = Math.ceil((canvas.width - offsetX) / safePixelSize);
+		const viewBottom = Math.ceil((canvas.height - offsetY) / safePixelSize);
+
+		// clamp to world bounds
+		const minX = Math.max(0, viewLeft);
+		const minY = Math.max(0, viewTop);
+		const maxX = Math.min(width - 1, viewRight);
+		const maxY = Math.min(height - 1, viewBottom);
+
+		// draw only pixels inside the visible rect
 		for (const { x, y, color } of pixels) {
+			if (x < minX || x > maxX || y < minY || y > maxY) continue;
 			drawPixel(ctx, x, y, color);
 		}
 	}
@@ -175,9 +189,6 @@
 
 		x = Math.round(x / safePixelSize);
 		y = Math.round(y / safePixelSize);
-
-		x = x - offsetX / safePixelSize;
-		y = y - offsetY / safePixelSize;
 
 		console.log(`Found x and y: (${x}, ${y})`);
 
@@ -274,7 +285,6 @@
 			on:mousedown={onMouseDown}
 			on:mousemove={onMouseMove}
 			on:mouseup={onMouseUp}
-			on:contextmenu|preventDefault
 			style="image-rendering: pixelated;
           	width: {width * safePixelSize}px;
           	height: {height * safePixelSize}px;
