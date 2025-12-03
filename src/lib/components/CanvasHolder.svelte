@@ -24,6 +24,11 @@
 	}
 </script>
 
-<div on:wheel={onWheel} class="canvas-holder">
+<div
+	on:wheel={onWheel}
+	class="canvas-holder"
+	on:contextmenu|preventDefault
+	role="region"
+	aria-label="Canvas area">
 	<Canvas {pixelSize}></Canvas>
 </div>
