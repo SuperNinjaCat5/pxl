@@ -2,7 +2,7 @@ import { SvelteKitAuth } from '@auth/sveltekit';
 import type { User } from '@auth/core/types';
 import { AUTH_SECRET } from '$env/static/private';
 import { addUser } from '$lib/server/db';
-const allowedEmails: string[] = ["ben.elliott.2021@gmail.com", "web@niiccoo2,xyz"];
+const allowedEmails: string[] = ['ben.elliott.2021@gmail.com', 'web@niiccoo2.xyz'];
 
 const HackClubProvider = {
 	id: 'hackclub',
@@ -13,7 +13,7 @@ const HackClubProvider = {
 	clientSecret: process.env.HACKCLUB_CLIENT_SECRET!,
 	authorization: {
 		url: 'https://account.hackclub.com/oauth/authorize',
-		params: { scope: 'email name' },
+		params: { scope: 'email name' }
 	},
 	token: 'https://account.hackclub.com/oauth/token',
 	userinfo: 'https://account.hackclub.com/api/v1/me',
@@ -21,9 +21,9 @@ const HackClubProvider = {
 		return {
 			id: profile.identity.id,
 			name: `${profile.identity.first_name} ${profile.identity.last_name}`,
-			email: profile.identity.primary_email,
+			email: profile.identity.primary_email
 		};
-	},
+	}
 };
 
 export const { handle } = SvelteKitAuth({
@@ -35,7 +35,7 @@ export const { handle } = SvelteKitAuth({
 			if (account?.provider === 'hackclub' && account.access_token) {
 				try {
 					const res = await fetch('https://account.hackclub.com/api/v1/me', {
-						headers: { Authorization: `Bearer ${account.access_token}` },
+						headers: { Authorization: `Bearer ${account.access_token}` }
 					});
 					const profile = await res.json();
 
@@ -55,7 +55,6 @@ export const { handle } = SvelteKitAuth({
 					} else {
 						return null;
 					}
-
 				} catch (err) {
 					console.error('Error fetching Hack Club profile:', err);
 				}
@@ -69,6 +68,6 @@ export const { handle } = SvelteKitAuth({
 			session.user.id = token.id as string;
 			session.user.slack_id = token.slack_id as string;
 			return session;
-		},
-	},
+		}
+	}
 });
