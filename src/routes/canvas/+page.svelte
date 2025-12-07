@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
 	import CanvasHolder from '$lib/components/CanvasHolder.svelte';
+
+	let currentColor: string = 'blue';
 </script>
 
 <svelte:head>
@@ -10,5 +12,6 @@
 <Header home_button={true} shop_button={true} is_canvas={true}></Header>
 
 <div class="page-content">
-	<CanvasHolder></CanvasHolder>
+	<CanvasHolder {currentColor}></CanvasHolder>
+	<input bind:value={currentColor} />
 </div>

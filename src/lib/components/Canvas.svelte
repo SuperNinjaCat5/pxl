@@ -26,7 +26,7 @@
 
 	let error: string = '';
 
-	let currentColor: string = 'blue';
+	export let currentColor: string = 'blue';
 
 	let sse: EventSource | null = null;
 

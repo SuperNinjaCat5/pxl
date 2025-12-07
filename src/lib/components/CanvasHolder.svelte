@@ -2,6 +2,7 @@
 	import Canvas from '$lib/components/Canvas.svelte';
 
 	export let editable = true;
+	export let currentColor: string = 'blue';
 
 	let pixelSizeConstant: number = 5;
 	let pixelSize: number = 5;
@@ -32,5 +33,5 @@
 	on:contextmenu|preventDefault
 	role="region"
 	aria-label="Canvas area">
-	<Canvas {editable} {pixelSize}></Canvas>
+	<Canvas {editable} {pixelSize} {currentColor}></Canvas>
 </div>
