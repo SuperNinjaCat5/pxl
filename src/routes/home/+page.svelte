@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
-	import Canvas from '$lib/components/Canvas.svelte';
+	import CanvasHolder from '$lib/components/CanvasHolder.svelte';
 	import AdminButton from '$lib/components/AdminButton.svelte';
 	export let data: { admin_viewer: boolean };
 	const user_is_admin = data.admin_viewer; // only for displaying buttons and stuff
@@ -26,5 +26,5 @@
 
 	<a href="/shop"><button>Shop</button></a>
 	{#if user_is_admin == true}<AdminButton location="/admin" title="Admin"></AdminButton>{/if}
-	<Canvas editable={false}></Canvas>
+	<CanvasHolder editable={false}></CanvasHolder>
 </div>

@@ -9,11 +9,33 @@ body {
 }
 
 .page-content {
-	padding-left: 1rem;
-	padding-right: 1rem;
+	padding-left: 0;
+	padding-right: 0;
+	/* width" 100vw; */
+}
+
+.canvas-layout {
+	display: flex;
 	width: 100vw;
-	/* height: 90vh; */
-	/* background-color: red; */
+	height: 85vh;
+	margin-top: 5vh;
+}
+
+.canvas-holder-area {
+	width: 70vw;
+	padding-left: 5vw;
+	padding-right: 5vw;
+}
+
+.side-panel {
+	height: 80vh;
+	width: 15vw;
+	border: 3px solid #0077ff;
+	box-shadow: 4px 4px 0 #004c99;
+	background-color: #c7f8ff;
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* horizontal center */
 }
 
 :root {
@@ -206,12 +228,11 @@ button {
 .canvas-holder {
 	border: 3px solid #0077ff;
 	box-shadow: 4px 4px 0 #004c99;
-	width: 90vw;
-	margin-top: 5vh;
+	width: 100%; /* fill .canvas-holder-area */
 	height: 80vh;
-	margin-left: 5vw;
 	overflow: hidden;
 	background-color: gray;
+	margin: 0; /* remove auto centering */
 }
 
 .navbar a {
