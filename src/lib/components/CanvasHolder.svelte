@@ -2,7 +2,7 @@
 	import Canvas from '$lib/components/Canvas.svelte';
 
 	export let editable = true;
-	export let currentColor: string = 'blue';
+	export let currentColor: string = '#FF0000';
 
 	let pixelSizeConstant: number = 5;
 	let pixelSize: number = 5;
