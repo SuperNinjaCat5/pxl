@@ -1,8 +1,8 @@
 ![pxl logo](https://raw.githubusercontent.com/SuperNinjaCat5/pxl/main/static/images/pxl-logo.png)
 
-# Pxl
+# pxl
 
-> coming soon?
+pxl is a open source r/place copy. It lets you place pixels on a canvas and change colors. It also updates all other peoples canvases live. Try it at [pxl.niiccoo2.xyz](https://pxl.niiccoo2.xyz)
 
 ### Color palate
 
