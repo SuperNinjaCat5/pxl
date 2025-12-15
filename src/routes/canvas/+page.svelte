@@ -1,8 +1,13 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
 	import CanvasHolder from '$lib/components/CanvasHolder.svelte';
+	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
+
+	export let data: PageData;
 
 	let currentColor: string = '#FF0000';
+	let hackatimeUser: string = '';
 
 	const palette = [
 		'#FF0000', // Red
@@ -14,6 +19,19 @@
 		'#000000', // Black
 		'#FFFFFF' // White
 	];
+
+	async function emailToHackatimeUser(email: string) {
+		const res = await fetch(`/api/hackatime/emailToUser?email=${encodeURIComponent(email)}`);
+		if (!res.ok) throw new Error(`API error: ${res.status}`);
+		const json = await res.json();
+
+		console.log('emailToUser', json);
+		return json;
+	}
+
+	onMount(async () => {
+		hackatimeUser = await emailToHackatimeUser(data.email);
+	});
 </script>
 
 <svelte:head>
@@ -35,9 +53,11 @@
 					style="background:{color};"
 					on:click={() => (currentColor = color)}
 					aria-label={color}>
-					<!-- {currentColor === color ? '✓' : ''} -->
 				</button>
 			{/each}
+		</div>
+		<div class="hackatime-info">
+			<p>{hackatimeUser}</p>
 		</div>
 	</div>
 </div>
@@ -68,5 +88,9 @@
 	.color-swatch.selected {
 		border-color: black;
 		box-shadow: 4px 4px 0 #888;
+	}
+
+	.hackatime-info {
+		padding-top: 5vh;
 	}
 </style>

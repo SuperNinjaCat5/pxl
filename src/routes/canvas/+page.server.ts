@@ -17,6 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const admin_viewer = user?.is_canvas_mod ?? false;
 
 	return {
-		admin_viewer
+		admin_viewer,
+		email
 	};
 };
