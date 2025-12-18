@@ -7,6 +7,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	// const allowed_emails = ["ben.elliott.2021@gmail.com","web@niiccoo2.xyz"];
 	const email = session?.user?.email ?? null;
+	const slackID = session?.user?.slack_id ?? null;
 
 	if (!email) {
 		redirect(302, '/');
@@ -18,6 +19,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	return {
 		admin_viewer,
-		email
+		slackID
 	};
 };

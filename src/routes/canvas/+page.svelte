@@ -6,8 +6,11 @@
 
 	export let data: PageData;
 
+	const START_DATE: string = '2025-12-10';
+	const DEBUG: boolean = true;
+
 	let currentColor: string = '#FF0000';
-	let hackatimeUser: string = '';
+	let totalTime: number = 0;
 
 	const palette = [
 		'#FF0000', // Red
@@ -20,17 +23,20 @@
 		'#FFFFFF' // White
 	];
 
-	async function emailToHackatimeUser(email: string) {
-		const res = await fetch(`/api/hackatime/emailToUser?email=${encodeURIComponent(email)}`);
+	async function getTotalHours(slackID: string = data.slackID ?? '') {
+		if (DEBUG) console.log('slackID', slackID);
+		const res = await fetch(
+			`https://hackatime.hackclub.com/api/v1/users/${slackID}/stats?start_date=${START_DATE}T00:00:00`
+		);
 		if (!res.ok) throw new Error(`API error: ${res.status}`);
 		const json = await res.json();
 
-		console.log('emailToUser', json);
-		return json;
+		if (DEBUG) console.log('total hours', json.total_seconds);
+		return json.total_seconds;
 	}
 
 	onMount(async () => {
-		hackatimeUser = await emailToHackatimeUser(data.email);
+		totalTime = await getTotalHours(data.slackID ?? '');
 	});
 </script>
 
@@ -57,7 +63,7 @@
 			{/each}
 		</div>
 		<div class="hackatime-info">
-			<p>{hackatimeUser}</p>
+			<p>{totalTime}</p>
 		</div>
 	</div>
 </div>
