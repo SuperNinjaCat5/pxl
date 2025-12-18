@@ -13,7 +13,7 @@ const HackClubProvider = {
 	clientSecret: process.env.HACKCLUB_CLIENT_SECRET!,
 	authorization: {
 		url: 'https://account.hackclub.com/oauth/authorize',
-		params: { scope: 'email name' }
+		params: { scope: 'email name slack_id' }
 	},
 	token: 'https://account.hackclub.com/oauth/token',
 	userinfo: 'https://account.hackclub.com/api/v1/me',
@@ -39,22 +39,24 @@ export const { handle } = SvelteKitAuth({
 					});
 					const profile = await res.json();
 
-					token.email = profile.identity.primary_email;
-					token.name = `${profile.identity.first_name} ${profile.identity.last_name}`;
-					token.id = profile.identity.id;
-					token.slack_id = profile.identity.slack_id;
-					//if (!allowedEmails.includes(token.email?)) {console.log('not allowed');return null;};
-					//if (typeof token.email === 'string' && allowedEmails.includes(token.email)) {
-					try {
-						addUser.run({ email: token.email, slack_id: token.slack_id });
-					} catch (err: any) {
-						if (!err.message.includes('UNIQUE constraint failed')) {
-							console.error('DB insert error:', err);
-						}
+					const email = profile?.identity?.primary_email;
+					const name =
+						profile?.identity?.first_name && profile?.identity?.last_name
+							? `${profile.identity.first_name} ${profile.identity.last_name}`
+							: undefined;
+					const id = profile?.identity?.id;
+					const slack_id = profile?.identity?.slack_id;
+
+					if (!email || !slack_id) {
+						throw new Error('Hack Club returned incomplete user data. Slack ID may be missing.');
 					}
-					//} else {
-					//	return null;
-					//}
+
+					token.email = email;
+					token.name = name!;
+					token.id = id!;
+					token.slack_id = slack_id;
+
+					await addUser({ email, slack_id, name });
 				} catch (err) {
 					console.error('Error fetching Hack Club profile:', err);
 				}
