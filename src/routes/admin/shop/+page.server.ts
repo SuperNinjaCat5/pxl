@@ -6,7 +6,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	console.log('user accesses /admin');
 	const session = await locals.auth();
 	const email = session?.user?.email ?? null;
-	const user = getUserFromEmail.get({ email });
+	const user = await getUserFromEmail(email as string);
 
 	if (!email) {
 		console.log('user had no email, send to /');
