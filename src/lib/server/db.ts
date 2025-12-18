@@ -69,7 +69,7 @@ function mapPermissions(permissions: string[] = []) {
 	};
 }
 
-export async function addUser(user: { email: string; slack_id: string }) {
+export async function addUser(user: { email: string; slack_id: string; name?: string }) {
 	const existing = await getUserFromEmail(user.email);
 	if (existing) return existing;
 

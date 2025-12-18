@@ -10,7 +10,8 @@ export const GET: RequestHandler = async (event) => {
 	}
 
 	const email = session.user.email;
-	const slack_id = session.user.id as string;
+	const slack_id = session.user.slack_id as string;
+	const name = session.user.name as string;
 
 	console.log('got request to check user');
 
@@ -21,7 +22,7 @@ export const GET: RequestHandler = async (event) => {
 		return new Response(JSON.stringify({ message: 'user exists' }));
 	}
 
-	await addUser({ email, slack_id });
+	await addUser({ email, slack_id, name });
 	// admin level is just for now, i will update the db to have bools for canvas edit, ship edit, shop edit, supa-admin
 	console.log('added user');
 

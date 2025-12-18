@@ -16,6 +16,8 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 
 	const res = await fetch('/api/users/check');
 
+	console.log('id is ' + user?.slack_id);
+
 	return {
 		admin_viewer
 	};
