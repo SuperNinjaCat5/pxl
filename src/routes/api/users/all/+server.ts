@@ -13,15 +13,15 @@ export const GET: RequestHandler = async (event) => {
 
 	// Require Admin
 	const email = session.user.email;
-	var user = getUserFromEmail.get({ email });
+	const user = await getUserFromEmail(email);
 
-	if (user.is_admin != true) {
+	if (user?.is_admin != true) {
 		return new Response('Unauthorized', { status: 401 });
 	}
 
 	console.log('got request for all users');
 
-	const users = getAllUsers.all();
+	const users = await getAllUsers();
 
 	console.log('got all users');
 

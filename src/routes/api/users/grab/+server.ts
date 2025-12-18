@@ -19,9 +19,9 @@ export const POST: RequestHandler = async (event) => {
 
 	// Require Admin
 	const email = session.user.email;
-	var accessingUser = getUserFromEmail.get({ email });
+	const accessingUser = await getUserFromEmail(email);
 
-	if (accessingUser.is_admin != true) {
+	if (accessingUser?.is_admin != true) {
 		return new Response('Unauthorized', { status: 401 });
 	}
 
@@ -36,7 +36,7 @@ export const POST: RequestHandler = async (event) => {
 		| undefined;
 
 	if (body?.user_email) {
-		const user = getUserFromEmail.get({ email: body.user_email });
+		const user = await getUserFromEmail(body.user_email);
 		console.log('got user: ', user);
 		return new Response(JSON.stringify(user), {
 			status: 200,
