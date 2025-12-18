@@ -7,17 +7,21 @@
 	type User = {
 		user_id: number;
 		email: string;
-		is_ship_edit: number;
-		is_shop_edit: number;
-		is_canvas_mod: number;
-		is_admin: number;
+	};
+
+	type UserInfo = {
+		email: string;
+		is_admin: boolean;
+		is_ship_edit: boolean;
+		is_shop_edit: boolean;
+		is_canvas_mod: boolean;
 	};
 
 	let users: User[] = [];
 	let filteredUsers: User[] = [];
 	let search = '';
 	let selectedUser: User | null = null;
-	let selectedUserInfo: User | null = null;
+	let selectedUserInfo: UserInfo | null = null;
 	let highlightIndex = 0;
 	let showList = false;
 	let showInfo = false;
@@ -100,10 +104,10 @@
 				{#if !selectedUserInfo}
 					<p>Loading...</p>
 				{:else}
-					<p>Admin: {selectedUserInfo.is_admin === 1 ? 'true' : 'false'}</p>
-					<p>Ship Edit: {selectedUserInfo.is_ship_edit === 1 ? 'true' : 'false'}</p>
-					<p>Shop Edit: {selectedUserInfo.is_shop_edit === 1 ? 'true' : 'false'}</p>
-					<p>Canvas Mod: {selectedUserInfo.is_canvas_mod === 1 ? 'true' : 'false'}</p>
+					<p>Admin: {selectedUserInfo.is_admin ? 'true' : 'false'}</p>
+					<p>Ship Edit: {selectedUserInfo.is_ship_edit ? 'true' : 'false'}</p>
+					<p>Shop Edit: {selectedUserInfo.is_shop_edit ? 'true' : 'false'}</p>
+					<p>Canvas Mod: {selectedUserInfo.is_canvas_mod ? 'true' : 'false'}</p>
 				{/if}
 			</div>
 		{/if}

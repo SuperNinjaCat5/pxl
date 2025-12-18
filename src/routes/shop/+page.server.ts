@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		redirect(302, '/');
 	}
 
-	const user = getUserFromEmail.get({ email });
+	const user = await getUserFromEmail(email);
 
 	const admin_viewer = user?.is_shop_edit ?? false;
 

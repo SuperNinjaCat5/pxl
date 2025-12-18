@@ -2,6 +2,7 @@
 import Database from 'better-sqlite3';
 import fs from 'node:fs';
 import path from 'node:path';
+import base from '$lib/server/airtable';
 
 const dbPath = process.env.DB_PATH ?? 'pxl.sqlite';
 console.log('Using DB at', dbPath);
@@ -53,24 +54,61 @@ ON CONFLICT(x, y) DO UPDATE SET
   placed_at = excluded.placed_at
 `);
 
-export const addUser = db.prepare(`
-  INSERT OR IGNORE INTO users (email, slack_id)
-  VALUES (:email, :slack_id)
-`);
-
-// export const getUserFromKey = db.prepare(`
-//   SELECT * FROM users WHERE ap i_key = :a pi_key
-// `);
-
-export const getUserFromEmail = db.prepare(`
-  SELECT * FROM users WHERE email = :email
-`);
-
-export const getAllUsers = db.prepare(`
-  SELECT * FROM users
-`);
-
 export const selectPixelsInRect = db.prepare(`
 SELECT x, y, color FROM pixels
 WHERE x BETWEEN @x0 AND @x1 AND y BETWEEN @y0 AND @y1
 `);
+
+function mapPermissions(permissions: string[] = []) {
+	return {
+		is_admin: permissions.includes('Admin'),
+		is_supaadmin: permissions.includes('SupaAdmin'),
+		is_canvas_mod: permissions.includes('Canvas_Mod'),
+		is_shop_edit: permissions.includes('Shop_Editor'),
+		is_ship_edit: permissions.includes('Shipwright')
+	};
+}
+
+export async function addUser(user: { email: string; slack_id: string; name?: string }) {
+	const existing = await getUserFromEmail(user.email);
+	if (existing) return existing;
+
+	const record = await base('Users').create(user);
+	return { id: record.id, ...record.fields };
+}
+
+export async function getUserFromEmail(email: string) {
+	const records = await base('Users')
+		.select({
+			filterByFormula: `{email} = '${email.replace("'", "\\'")}'`,
+			maxRecords: 1
+		})
+		.firstPage();
+
+	if (records.length === 0) return null;
+
+	const fields = records[0].fields;
+	const permissions = (fields.Permissions as string[]) || [];
+
+	return {
+		id: records[0].id,
+		email: fields.email as string,
+		slack_id: fields.slack_id as string,
+		...mapPermissions((permissions as string[]) || [])
+	};
+}
+
+export async function getAllUsers() {
+	const records = await base('Users').select().all();
+
+	return records.map((r) => {
+		const fields = r.fields;
+		const permissions = (fields.Permissions as string[]) || [];
+		return {
+			id: r.id,
+			email: fields.email,
+			slack_id: fields.slack_id,
+			...mapPermissions(permissions)
+		};
+	});
+}
