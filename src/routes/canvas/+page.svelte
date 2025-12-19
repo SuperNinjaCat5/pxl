@@ -13,6 +13,9 @@
 	let totalTime: number = 0;
 	let readableTime: string = '';
 
+	const pixels = data.totalPixels;
+	let totalPixels = typeof pixels === 'number' ? pixels : 0;
+
 	const palette = [
 		'#FF0000', // Red
 		'#FFA500', // Orange
@@ -39,6 +42,7 @@
 
 	onMount(async () => {
 		const result = await getTotalTime(data.slackID ?? '');
+		
 		totalTime = result[0];
 		readableTime = result[1];
 	});
@@ -68,6 +72,8 @@
 		</div>
 		<div class="hackatime-info">
 			<p>{readableTime}</p>
+			<br>
+			<p>{totalPixels}</p>
 		</div>
 	</div>
 </div>

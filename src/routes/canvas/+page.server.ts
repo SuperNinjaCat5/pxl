@@ -1,6 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { getUserFromEmail } from '$lib/server/db';
 import { redirect } from '@sveltejs/kit';
+import { numberOfPixels } from '$lib/server/db';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth();
@@ -17,8 +18,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const admin_viewer = user?.is_canvas_mod ?? false;
 
+	const totalPixels = numberOfPixels(slackID ?? '');
+
 	return {
 		admin_viewer,
-		slackID
+		slackID,
+		totalPixels
 	};
 };
