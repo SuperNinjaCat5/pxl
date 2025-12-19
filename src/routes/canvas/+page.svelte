@@ -11,6 +11,7 @@
 
 	let currentColor: string = '#FF0000';
 	let totalTime: number = 0;
+	let readableTime: string = '';
 
 	const palette = [
 		'#FF0000', // Red
@@ -23,7 +24,7 @@
 		'#FFFFFF' // White
 	];
 
-	async function getTotalHours(slackID: string = data.slackID ?? '') {
+	async function getTotalTime(slackID: string = data.slackID ?? '') {
 		if (DEBUG) console.log('slackID', slackID);
 		const res = await fetch(
 			`https://hackatime.hackclub.com/api/v1/users/${slackID}/stats?start_date=${START_DATE}T00:00:00`
@@ -31,12 +32,15 @@
 		if (!res.ok) throw new Error(`API error: ${res.status}`);
 		const json = await res.json();
 
-		if (DEBUG) console.log('total hours', json.total_seconds);
-		return json.total_seconds;
+		if (DEBUG) console.log('total secs', json.data.total_seconds);
+		
+		return [json.data.total_seconds, json.data.human_readable_total];
 	}
 
 	onMount(async () => {
-		totalTime = await getTotalHours(data.slackID ?? '');
+		const result = await getTotalTime(data.slackID ?? '');
+		totalTime = result[0];
+		readableTime = result[1];
 	});
 </script>
 
@@ -63,7 +67,7 @@
 			{/each}
 		</div>
 		<div class="hackatime-info">
-			<p>{totalTime}</p>
+			<p>{readableTime}</p>
 		</div>
 	</div>
 </div>
