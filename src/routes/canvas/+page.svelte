@@ -17,8 +17,10 @@
 	let readableTime: string = '';
 	let numberOfPlaceablePixels: number = 0;
 
-	$: totalPixelsPlaced = typeof data.totalPixelsPlaced === 'number' ? data.totalPixelsPlaced : 0;
-	$: numberOfPlaceablePixels = Math.floor(totalTime / SEC_PER_PIXEL - totalPixelsPlaced);
+	$: totalPixelsPlaced = Number(data.totalPixelsPlaced) || 0;
+
+	// prettier-ignore
+	$: numberOfPlaceablePixels = Math.floor((totalTime / SEC_PER_PIXEL) - totalPixelsPlaced);
 
 	const palette = [
 		'#FF0000', // Red
