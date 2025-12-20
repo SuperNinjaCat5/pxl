@@ -15,18 +15,20 @@
 <Header welcome_message={true}></Header>
 
 <div class="page-content">
-	<br />
+	<div class="home-actions">
+		<br />
 
-	<a href="/canvas"
-		><button class="canvas-button">
-			<span class="glitch-layer">Enter the Bitvault</span>
-			<span class="glitch-layer">Enter the Bitvault</span>
-			<span class="glitch-layer">Enter the Bitvault</span>
-			<span class="glitch-layer">Enter the Bitvault</span>
-			Enter the Bitvault
-		</button></a>
+		<a href="/canvas"
+			><button class="canvas-button">
+				<span class="glitch-layer">Enter the Bitvault</span>
+				<span class="glitch-layer">Enter the Bitvault</span>
+				<span class="glitch-layer">Enter the Bitvault</span>
+				<span class="glitch-layer">Enter the Bitvault</span>
+				Enter the Bitvault
+			</button></a>
 
-	<button on:click={() => goto('/shop')}>Shop</button>
-	{#if user_is_admin == true}<AdminButton location="/admin" title="Admin"></AdminButton>{/if}
-	<CanvasHolder editable={false}></CanvasHolder>
+		<button on:click={() => goto('/shop')}>Shop</button>
+		{#if user_is_admin == true}<AdminButton location="/admin" title="Admin"></AdminButton>{/if}
+	</div>
+	<CanvasHolder editable={false} on_homepage={true}></CanvasHolder>
 </div>
