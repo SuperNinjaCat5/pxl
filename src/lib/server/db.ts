@@ -108,10 +108,17 @@ export async function numberOfPixels(slack_id: string, add_pixel: boolean = fals
 
 	if (records.length === 0) return null;
 
-	const fields = records[0].fields;
-	const pixels_placed = (fields.pixels_placed as number) || 0;
+	const record = records[0];
+	let pixels_placed = (record.fields.pixels_placed as number) || 0;
 
-	return pixels_placed ?? 0;
+	if (add_pixel) {
+		pixels_placed += 1;
+		await base('Users').update(record.id, {
+			pixels_placed: pixels_placed
+		});
+	}
+
+	return pixels_placed;
 }
 
 export async function getAllUsers() {

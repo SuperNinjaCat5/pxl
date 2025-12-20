@@ -2,25 +2,32 @@
 	import Header from '$lib/components/Header.svelte';
 	import CanvasHolder from '$lib/components/CanvasHolder.svelte';
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
 
 	export let data: PageData;
 
-	const START_DATE: string = '2025-12-10';
 	const SEC_PER_PIXEL: number = 300; // 5 min
 	// should prob have an api that this reads from
 
 	const DEBUG: boolean = true;
 
 	let currentColor: string = '#FF0000';
-	let totalTime: number = 0;
-	let readableTime: string = '';
 	let numberOfPlaceablePixels: number = 0;
 
-	$: totalPixelsPlaced = Number(data.totalPixelsPlaced) || 0;
+	console.log('totalPixelsPlaced', data.totalPixelsPlaced);
 
-	// prettier-ignore
-	$: numberOfPlaceablePixels = Math.floor((totalTime / SEC_PER_PIXEL) - totalPixelsPlaced);
+	$: totalPixelsPlaced = data.totalPixelsPlaced || 0;
+	$: totalTime = data.totalTime || 0;
+	$: readableTime = data.readableTime || '';
+
+	$: {
+		const calculatedPixels = Math.floor(totalTime / SEC_PER_PIXEL - totalPixelsPlaced);
+		numberOfPlaceablePixels = Math.max(0, calculatedPixels);
+	}
+
+	if (DEBUG) {
+		console.log('totalTime', totalTime);
+		// console.log('totalPixelsPlaced', totalPixelsPlaced);
+	}
 
 	const palette = [
 		'#FF0000', // Red
@@ -32,26 +39,6 @@
 		'#000000', // Black
 		'#FFFFFF' // White
 	];
-
-	async function getTotalTime(slackID: string = data.slackID ?? '') {
-		if (DEBUG) console.log('slackID', slackID);
-		const res = await fetch(
-			`https://hackatime.hackclub.com/api/v1/users/${slackID}/stats?start_date=${START_DATE}T00:00:00`
-		);
-		if (!res.ok) throw new Error(`API error: ${res.status}`);
-		const json = await res.json();
-
-		if (DEBUG) console.log('total secs', json.data.total_seconds);
-
-		return [json.data.total_seconds, json.data.human_readable_total];
-	}
-
-	onMount(async () => {
-		const result = await getTotalTime(data.slackID ?? '');
-
-		totalTime = result[0];
-		readableTime = result[1];
-	});
 </script>
 
 <svelte:head>
@@ -62,7 +49,7 @@
 
 <div class="canvas-layout">
 	<div class="canvas-holder-area">
-		<CanvasHolder {currentColor} />
+		<CanvasHolder {currentColor} on:pixelPlaced={() => (totalPixelsPlaced += 1)} />
 	</div>
 	<div class="side-panel">
 		<!-- Color palette grid -->

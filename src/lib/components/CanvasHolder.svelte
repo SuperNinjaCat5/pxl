@@ -33,5 +33,5 @@
 	on:contextmenu|preventDefault
 	role="region"
 	aria-label="Canvas area">
-	<Canvas {editable} {pixelSize} {currentColor}></Canvas>
+	<Canvas {editable} {pixelSize} {currentColor} on:pixelPlaced></Canvas>
 </div>

@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
-	// import { HEIGHT, WIDTH } from "$lib/server/db";
+
+	const dispatch = createEventDispatcher();
 
 	export let editable = true;
 
@@ -258,16 +259,18 @@
 
 			if (!res.ok) {
 				console.error('Unable to place pixel:', await res.text());
-			}
-			console.log(`placed pixel at (${x}, ${y})`);
-
-			// Optimistically update local pixels so subsequent redraws include it
-			const existing = pixels.findIndex((p) => p.x === x && p.y === y);
-			if (existing >= 0) {
-				pixels[existing] = { x, y, color: currentColor };
-				pixels = pixels;
 			} else {
-				pixels = [...pixels, { x, y, color: currentColor }];
+				console.log(`placed pixel at (${x}, ${y})`);
+				dispatch('pixelPlaced');
+
+				// Optimistically update local pixels so subsequent redraws include it
+				const existing = pixels.findIndex((p) => p.x === x && p.y === y);
+				if (existing >= 0) {
+					pixels[existing] = { x, y, color: currentColor };
+					pixels = pixels;
+				} else {
+					pixels = [...pixels, { x, y, color: currentColor }];
+				}
 			}
 		} catch (err) {
 			console.error('network error:', err);
