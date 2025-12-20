@@ -2,12 +2,32 @@
 	import Header from '$lib/components/Header.svelte';
 	import CanvasHolder from '$lib/components/CanvasHolder.svelte';
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
 
 	export let data: PageData;
 
+	const SEC_PER_PIXEL: number = 300; // 5 min
+	// should prob have an api that this reads from
+
+	const DEBUG: boolean = true;
+
 	let currentColor: string = '#FF0000';
-	let hackatimeUser: string = '';
+	let numberOfPlaceablePixels: number = 0;
+
+	console.log('totalPixelsPlaced', data.totalPixelsPlaced);
+
+	$: totalPixelsPlaced = data.totalPixelsPlaced || 0;
+	$: totalTime = data.totalTime || 0;
+	$: readableTime = data.readableTime || '';
+
+	$: {
+		const calculatedPixels = Math.floor(totalTime / SEC_PER_PIXEL - totalPixelsPlaced);
+		numberOfPlaceablePixels = Math.max(0, calculatedPixels);
+	}
+
+	if (DEBUG) {
+		console.log('totalTime', totalTime);
+		// console.log('totalPixelsPlaced', totalPixelsPlaced);
+	}
 
 	const palette = [
 		'#FF0000', // Red
@@ -19,19 +39,6 @@
 		'#000000', // Black
 		'#FFFFFF' // White
 	];
-
-	async function emailToHackatimeUser(email: string) {
-		const res = await fetch(`/api/hackatime/emailToUser?email=${encodeURIComponent(email)}`);
-		if (!res.ok) throw new Error(`API error: ${res.status}`);
-		const json = await res.json();
-
-		console.log('emailToUser', json);
-		return json;
-	}
-
-	onMount(async () => {
-		hackatimeUser = await emailToHackatimeUser(data.email);
-	});
 </script>
 
 <svelte:head>
@@ -42,7 +49,7 @@
 
 <div class="canvas-layout">
 	<div class="canvas-holder-area">
-		<CanvasHolder {currentColor} />
+		<CanvasHolder {currentColor} on:pixelPlaced={() => (totalPixelsPlaced += 1)} />
 	</div>
 	<div class="side-panel">
 		<!-- Color palette grid -->
@@ -57,7 +64,7 @@
 			{/each}
 		</div>
 		<div class="hackatime-info">
-			<p>{hackatimeUser}</p>
+			<p>{numberOfPlaceablePixels} pixels left</p>
 		</div>
 	</div>
 </div>

@@ -98,6 +98,29 @@ export async function getUserFromEmail(email: string) {
 	};
 }
 
+export async function numberOfPixels(slack_id: string, add_pixel: boolean = false) {
+	const records = await base('Users')
+		.select({
+			filterByFormula: `{slack_id} = '${slack_id.replace("'", "\\'")}'`,
+			maxRecords: 1
+		})
+		.firstPage();
+
+	if (records.length === 0) return null;
+
+	const record = records[0];
+	let pixels_placed = (record.fields.pixels_placed as number) || 0;
+
+	if (add_pixel) {
+		pixels_placed += 1;
+		await base('Users').update(record.id, {
+			pixels_placed: pixels_placed
+		});
+	}
+
+	return pixels_placed;
+}
+
 export async function getAllUsers() {
 	const records = await base('Users').select().all();
 
