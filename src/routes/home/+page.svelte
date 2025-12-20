@@ -2,6 +2,8 @@
 	import Header from '$lib/components/Header.svelte';
 	import CanvasHolder from '$lib/components/CanvasHolder.svelte';
 	import AdminButton from '$lib/components/AdminButton.svelte';
+	import { redirect } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
 	export let data: { admin_viewer: boolean };
 	const user_is_admin = data.admin_viewer; // only for displaying buttons and stuff
 </script>
@@ -24,7 +26,7 @@
 			Enter the Bitvault
 		</button></a>
 
-	<a href="/shop"><button>Shop</button></a>
+	<button on:click={() => goto('/shop')}>Shop</button>
 	{#if user_is_admin == true}<AdminButton location="/admin" title="Admin"></AdminButton>{/if}
 	<CanvasHolder editable={false}></CanvasHolder>
 </div>

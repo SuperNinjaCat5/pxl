@@ -275,6 +275,7 @@ button {
 	}
 
 	button {
+		margin-bottom: 0.6rem;
 		margin-top: 0.6rem;
 	}
 }
@@ -296,5 +297,6 @@ button {
 
 	button {
 		margin-top: 1.2rem;
+		margin-bottom: 1.2rem;
 	}
 }
