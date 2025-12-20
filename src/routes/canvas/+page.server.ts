@@ -18,11 +18,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const admin_viewer = user?.is_canvas_mod ?? false;
 
-	const totalPixels = numberOfPixels(slackID ?? '');
+	const totalPixelsPlaced = await numberOfPixels(slackID ?? '');
 
 	return {
 		admin_viewer,
 		slackID,
-		totalPixels
+		totalPixelsPlaced
 	};
 };

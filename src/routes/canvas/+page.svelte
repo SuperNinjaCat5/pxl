@@ -7,14 +7,18 @@
 	export let data: PageData;
 
 	const START_DATE: string = '2025-12-10';
+	const SEC_PER_PIXEL: number = 300; // 5 min
+	// should prob have an api that this reads from
+
 	const DEBUG: boolean = true;
 
 	let currentColor: string = '#FF0000';
 	let totalTime: number = 0;
 	let readableTime: string = '';
+	let numberOfPlaceablePixels: number = 0;
 
-	const pixels = data.totalPixels;
-	let totalPixels = typeof pixels === 'number' ? pixels : 0;
+	$: totalPixelsPlaced = typeof data.totalPixelsPlaced === 'number' ? data.totalPixelsPlaced : 0;
+	$: numberOfPlaceablePixels = Math.floor(totalTime / SEC_PER_PIXEL - totalPixelsPlaced);
 
 	const palette = [
 		'#FF0000', // Red
@@ -36,13 +40,13 @@
 		const json = await res.json();
 
 		if (DEBUG) console.log('total secs', json.data.total_seconds);
-		
+
 		return [json.data.total_seconds, json.data.human_readable_total];
 	}
 
 	onMount(async () => {
 		const result = await getTotalTime(data.slackID ?? '');
-		
+
 		totalTime = result[0];
 		readableTime = result[1];
 	});
@@ -71,9 +75,7 @@
 			{/each}
 		</div>
 		<div class="hackatime-info">
-			<p>{readableTime}</p>
-			<br>
-			<p>{totalPixels}</p>
+			<p>{numberOfPlaceablePixels} pixels left</p>
 		</div>
 	</div>
 </div>
