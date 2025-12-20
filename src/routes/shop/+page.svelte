@@ -4,6 +4,7 @@
 	// import { goto } from '$app/navigation';
 	// import { onMount } from 'svelte';
 	import '$lib/assets/styles/shop.css';
+	import '$lib/assets/styles/home.css';
 	import Header from '$lib/components/Header.svelte';
 
 	export let data: { admin_viewer: boolean };
@@ -62,8 +63,18 @@
 
 <Header home_button={true} canvas_button={true} shop_admin_button={user_is_admin}></Header>
 
-<div class="shop-wrapper">
-	{#each products as product}
-		<ShopItem name={product.name} price={product.price} note={product.note} image={product.image} />
-	{/each}
+<div class="page-content">
+	<div class="shop-wrapper">
+		{#each products as product}
+			<ShopItem
+				name={product.name}
+				price={product.price}
+				note={product.note}
+				image={product.image} />
+		{/each}
+	</div>
+	<br />
+	<p>Like what you see?</p>
+	<a href="https://example.com/fillout"><button>Submit a project to get one!</button></a>
+	<br /> <br />
 </div>
