@@ -232,7 +232,22 @@ button {
 	height: 80vh;
 	overflow: hidden;
 	background-color: gray;
-	margin: 0; /* remove auto centering */
+	margin: 0rem; /* remove auto centering */
+}
+
+.canvas-holder-homepage {
+	border: 3px solid #0077ff;
+	box-shadow: 4px 4px 0 #004c99;
+	width: 100%; /* fill .canvas-holder-area */
+	height: 80vh;
+	overflow: hidden;
+	background-color: gray;
+	margin: 1rem; /* remove auto centering */
+}
+
+.home-actions {
+	margin-left: 1rem;
+	margin-bottom: 1rem;
 }
 
 .navbar a {

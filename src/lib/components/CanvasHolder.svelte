@@ -3,6 +3,7 @@
 
 	export let editable = true;
 	export let currentColor: string = '#FF0000';
+	export let on_homepage = false;
 
 	let pixelSizeConstant: number = 5;
 	let pixelSize: number = 5;
@@ -29,7 +30,7 @@
 
 <div
 	on:wheel={onWheel}
-	class="canvas-holder"
+	class={on_homepage ? 'canvas-holder-homepage' : 'canvas-holder'}
 	on:contextmenu|preventDefault
 	role="region"
 	aria-label="Canvas area">
