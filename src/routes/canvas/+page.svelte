@@ -64,7 +64,7 @@
 			{/each}
 		</div>
 		<div class="hackatime-info">
-			<p>{numberOfPlaceablePixels} pixels left</p>
+			<p>{numberOfPlaceablePixels} pixels</p>
 		</div>
 	</div>
 </div>
