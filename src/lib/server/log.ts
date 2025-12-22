@@ -1,27 +1,39 @@
-import { appendFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
 
 const LOG_FILE = resolve(process.cwd(), 'action-log.json');
 
+function readLog(): any[] {
+	if (!existsSync(LOG_FILE)) return [];
+	try {
+		const content = readFileSync(LOG_FILE, 'utf-8').trim();
+		if (!content) return [];
+		return JSON.parse(content);
+	} catch {
+		console.error('Corrupted log file, starting fresh.');
+		return [];
+	}
+}
+
 export function log_action(action: string, email: string) {
-	const entry = {
+	const logs = readLog();
+	logs.push({
 		time: new Date().toISOString(),
 		email,
 		action
-	};
-
-	appendFileSync('action-log.json', JSON.stringify(entry) + '\n', { encoding: 'utf-8' });
+	});
+	writeFileSync(LOG_FILE, JSON.stringify(logs, null, 2), 'utf-8');
 }
 
 export function log_pxl(action: string, x: number, y: number, color: string, email: string) {
-	const entry = {
+	const logs = readLog();
+	logs.push({
 		time: new Date().toISOString(),
 		email,
 		action,
 		x,
 		y,
 		color
-	};
-
-	appendFileSync('action-log.json', JSON.stringify(entry) + '\n', { encoding: 'utf-8' });
+	});
+	writeFileSync(LOG_FILE, JSON.stringify(logs, null, 2), 'utf-8');
 }
