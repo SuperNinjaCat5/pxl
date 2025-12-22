@@ -7,6 +7,7 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
+action-log.json
 
 # OS
 .DS_Store
