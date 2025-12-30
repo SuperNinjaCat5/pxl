@@ -30,4 +30,4 @@ COPY --from=build /app/static ./static
 
 EXPOSE 3000
 
-CMD ["node", "build/index.js"]
+CMD ["node", "index.js"]
