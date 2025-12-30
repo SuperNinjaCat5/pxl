@@ -28,4 +28,4 @@ COPY --from=build /app/build ./build
 
 EXPOSE 3000
 
-CMD ["node", "build"]
+CMD ["node", "build/index.js"]
