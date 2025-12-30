@@ -1,4 +1,4 @@
-# ---- Build Step ----
+# ---- Build Stage ----
 FROM node:20-alpine AS build
 
 WORKDIR /app
@@ -13,7 +13,7 @@ COPY . .
 
 RUN npm run build
 
-# ---- Production Step ----
+# ---- Production Stage ----
 FROM node:20-alpine
 
 WORKDIR /app
@@ -24,9 +24,7 @@ RUN \
   elif [ -f pnpm-lock.yaml ]; then npm i -g pnpm && pnpm i --prod; \
   else npm i --omit=dev; fi
 
-COPY --from=build /app/build ./
-COPY --from=build /app/.svelte-kit ./.svelte-kit
-COPY --from=build /app/static ./static
+COPY --from=build /app/build ./build
 
 EXPOSE 3000
 
