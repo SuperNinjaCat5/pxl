@@ -1,6 +1,8 @@
 import type { RequestHandler } from './$types';
 import { HEIGHT, WIDTH, upsertPixel, numberOfPixels } from '$lib/server/db';
 import { broadcast } from '$lib/server/pixelStream';
+import { log_pxl } from '$lib/server/log';
+import { log } from 'console';
 
 const START_DATE: string = '2025-12-10';
 const SEC_PER_PIXEL: number = 300;
@@ -96,6 +98,8 @@ export const POST: RequestHandler = async (event) => {
 			color,
 			placed_by
 		});
+
+		log_pxl('Placed pixel', x, y, color, session.user.email);
 
 		return new Response(JSON.stringify({ ok: true }), {
 			status: 200,
